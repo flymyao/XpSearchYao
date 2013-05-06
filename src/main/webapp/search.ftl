@@ -1,7 +1,7 @@
 <div class="searchForm">
 	<center>
 	  <form class="form-inline" action="search">
-	  	<input type="text" placeholder="search keywords" class="searchInput" value="${keywords}"/>
+	  	<input type="text" placeholder="search keywords" name="keywords" class="searchInput" value="${keywords}"/>
 	  	<input type="submit" value="Search" class="btn btn-primary"/>
 	  </form>
   </center>

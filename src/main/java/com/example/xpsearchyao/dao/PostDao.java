@@ -14,8 +14,11 @@ public class PostDao extends BaseHibernateDao<Post>{
 	public List<Map> fts(String query){
 		StringBuffer sql = new StringBuffer();
 		sql.append("select title,ts_headline(body, plainto_tsquery('")
-		.append(query).append("')) as body from xpsearchyao_schema.post");
-		
+		.append(query).append("'))  as body ")
+		.append(",ts_rank(to_tsvector(body), plainto_tsquery('")
+		.append(query)
+		.append("')) as rank ")
+		.append(" from xpsearchyao_schema.post order by rank desc");
 		return daoHelper.getSession().createSQLQuery(sql.toString())
 		.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
 	}
