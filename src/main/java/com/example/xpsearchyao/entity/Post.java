@@ -2,6 +2,7 @@ package com.example.xpsearchyao.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -17,7 +18,7 @@ public class Post extends BaseEntity{
 	
 	private Long viewCount;
 	
-	private byte[] body;
+	private String body;
 	
 	private Long ownerUserId;
 	
@@ -78,12 +79,12 @@ public class Post extends BaseEntity{
 	public void setViewCount(Long viewCount) {
 		this.viewCount = viewCount;
 	}
-
-	public byte[] getBody() {
+	@Column(columnDefinition="text")
+	public String getBody() {
 		return body;
 	}
 
-	public void setBody(byte[] body) {
+	public void setBody(String body) {
 		this.body = body;
 	}
 

@@ -37,7 +37,7 @@ public class SeedDataHooks {
     public void seedStore(UserDao userDao,PostDao postDao, HibernateSessionInViewHandler inView) {
     	inView.openSessionInView();
     	List<Map> posts = DataReader.readXML("Posts.xml");
-    	int i = 10;
+    	int i = 9;
     	for(Map m:posts){
     		i++;
     		if(i==10){
@@ -45,7 +45,7 @@ public class SeedDataHooks {
     		}
     		System.out.println(m.get("Body"));
     		Post post = new Post();
-    		post.setBody(((String)m.get("Body")).getBytes());
+    		post.setBody(((String)m.get("Body")));
     		post.setTitle((String)m.get("Title"));
     		postDao.save(post);
     	}
