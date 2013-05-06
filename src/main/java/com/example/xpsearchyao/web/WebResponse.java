@@ -1,6 +1,6 @@
-package com.example.samplebookmarks.web;
+package com.example.xpsearchyao.web;
 
-import com.example.samplebookmarks.AppException;
+import com.example.xpsearchyao.AppException;
 import com.google.common.base.Strings;
 
 public class WebResponse {

@@ -1,9 +1,9 @@
-package com.example.samplebookmarks.web;
+package com.example.xpsearchyao.web;
 
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.auth.AuthRequest;
 import com.britesnow.snow.web.auth.AuthToken;
-import com.example.samplebookmarks.entity.User;
+import com.example.xpsearchyao.entity.User;
 
 public class AppAuthRequest implements AuthRequest<User> {
 
@@ -16,15 +16,13 @@ public class AppAuthRequest implements AuthRequest<User> {
         // RequestContext is a convenient Snow wrapper on top of HttpServletRequest, 
         //  and HttpServletResponse
         // rc.getReq() return the HttpServletRequest 
-        User user = (User) rc.getReq().getSession().getAttribute("user");
-        
-        if (user != null){
-            AuthToken<User> authToken = new AuthToken<User>();
-            authToken.setUser(user);
-            return authToken;
-        }else{
-            return null;
-        }
+       // User user = (User) rc.getReq().getSession().getAttribute("user");
+        User user = new User();
+        user.setDisplayName("testUser");
+        user.setId(1L);
+        AuthToken<User> authToken = new AuthToken<User>();
+        authToken.setUser(user);
+        return authToken;
     }
 
 }
