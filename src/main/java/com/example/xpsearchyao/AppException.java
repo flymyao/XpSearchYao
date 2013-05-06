@@ -1,4 +1,4 @@
-package com.example.samplebookmarks;
+package com.example.xpsearchyao;
 
 @SuppressWarnings("serial")
 public class AppException extends RuntimeException {

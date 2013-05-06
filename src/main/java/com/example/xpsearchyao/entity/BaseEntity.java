@@ -1,4 +1,4 @@
-package com.example.samplebookmarks.entity;
+package com.example.xpsearchyao.entity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

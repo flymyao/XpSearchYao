@@ -1,4 +1,4 @@
-package com.example.samplebookmarks.dao;
+package com.example.xpsearchyao.dao;
 import java.util.List;
 import java.util.Map;
 

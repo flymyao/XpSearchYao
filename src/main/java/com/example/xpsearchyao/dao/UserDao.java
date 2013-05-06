@@ -1,6 +1,6 @@
-package com.example.samplebookmarks.dao;
+package com.example.xpsearchyao.dao;
 
-import com.example.samplebookmarks.entity.User;
+import com.example.xpsearchyao.entity.User;
 import com.google.inject.Singleton;
 
 @Singleton
