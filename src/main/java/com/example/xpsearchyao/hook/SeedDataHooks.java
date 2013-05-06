@@ -2,6 +2,8 @@ package com.example.xpsearchyao.hook;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import org.hibernate.jdbc.Work;
 
@@ -10,7 +12,10 @@ import com.britesnow.snow.web.db.hibernate.HibernateSessionInViewHandler;
 import com.britesnow.snow.web.hook.AppPhase;
 import com.britesnow.snow.web.hook.On;
 import com.britesnow.snow.web.hook.annotation.WebApplicationHook;
+import com.example.xpsearchyao.dao.PostDao;
 import com.example.xpsearchyao.dao.UserDao;
+import com.example.xpsearchyao.entity.Post;
+import com.example.xpsearchyao.util.DataReader;
 import com.google.inject.Singleton;
 
 @Singleton
@@ -29,7 +34,22 @@ public class SeedDataHooks {
      * 
      */
     @WebApplicationHook(phase = AppPhase.INIT)
-    public void seedStore(UserDao userDao, HibernateSessionInViewHandler inView) {}
+    public void seedStore(UserDao userDao,PostDao postDao, HibernateSessionInViewHandler inView) {
+    	inView.openSessionInView();
+    	List<Map> posts = DataReader.readXML("Posts.xml");
+    	int i = 10;
+    	for(Map m:posts){
+    		i++;
+    		if(i==10){
+    			break;
+    		}
+    		System.out.println(m.get("Body"));
+    		Post post = new Post();
+    		post.setBody(((String)m.get("Body")).getBytes());
+    		post.setTitle((String)m.get("Title"));
+    		postDao.save(post);
+    	}
+    }
 
     /**
      * Using HSQLDB we need to shutdown the database to be written in the file system.

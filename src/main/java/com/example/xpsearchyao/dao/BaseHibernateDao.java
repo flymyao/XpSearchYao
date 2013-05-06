@@ -50,6 +50,7 @@ public abstract class BaseHibernateDao<E> implements IDao<E> {
     }
 
     public E save(E entity) {
+    	System.out.println(entity.getClass());
         return daoHelper.save(entity);
     }
 

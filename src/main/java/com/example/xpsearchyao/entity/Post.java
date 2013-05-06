@@ -17,7 +17,7 @@ public class Post extends BaseEntity{
 	
 	private Long viewCount;
 	
-	private String body;
+	private byte[] body;
 	
 	private Long ownerUserId;
 	
@@ -79,11 +79,11 @@ public class Post extends BaseEntity{
 		this.viewCount = viewCount;
 	}
 
-	public String getBody() {
+	public byte[] getBody() {
 		return body;
 	}
 
-	public void setBody(String body) {
+	public void setBody(byte[] body) {
 		this.body = body;
 	}
 
