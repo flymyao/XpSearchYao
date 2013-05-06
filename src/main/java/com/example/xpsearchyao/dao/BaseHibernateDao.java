@@ -1,10 +1,4 @@
-package com.example.samplebookmarks.dao;
-
-import com.britesnow.snow.web.db.hibernate.HibernateDaoHelper;
-import com.example.samplebookmarks.entity.BaseEntity;
-import com.google.inject.Inject;
-import com.googlecode.gentyref.GenericTypeReflector;
-import org.apache.commons.lang.StringUtils;
+package com.example.xpsearchyao.dao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -12,6 +6,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.britesnow.snow.web.db.hibernate.HibernateDaoHelper;
+import com.example.xpsearchyao.entity.BaseEntity;
+import com.google.inject.Inject;
+import com.googlecode.gentyref.GenericTypeReflector;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class BaseHibernateDao<E> implements IDao<E> {
