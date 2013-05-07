@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>sampleBookmarks: Simple Snow and brite.js demo</title>
+    <title>XpSearch</title>
     
     <link rel="stylesheet" type="text/css" href="${_r.contextPath}/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${_r.contextPath}/css/main.css">
