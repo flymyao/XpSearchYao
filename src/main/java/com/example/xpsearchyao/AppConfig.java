@@ -4,10 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.britesnow.snow.util.PackageScanner;
-import com.britesnow.snow.web.auth.AuthRequest;
 import com.britesnow.snow.web.binding.EntityClasses;
 import com.example.xpsearchyao.entity.BaseEntity;
-import com.example.xpsearchyao.web.AppAuthRequest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -24,7 +22,6 @@ public class AppConfig extends AbstractModule {
     
     @Override
     protected void configure() {
-        bind(AuthRequest.class).to(AppAuthRequest.class);
     }
 
     
