@@ -37,12 +37,12 @@ public class FTSWebHandlers {
 		.append(keywords)
 		.append("')) as titleRank ")
 		.append(" from xpsearchyao_schema.post ")
-		.append(" where ts_rank(btsv, plainto_tsquery('")
+		.append(" where btsv @@ plainto_tsquery('")
 		.append(keywords)
-		.append(" '))>0 or  ")
-		.append(" ts_rank(ttsv, plainto_tsquery('")
+		.append(" ') or  ")
+		.append("  ttsv @@ plainto_tsquery('")
 		.append(keywords)
-		.append(" '))>0 ")
+		.append(" ')")
 		.append(" order by titleRank,bodyRank desc");
 		Long startTime = System.currentTimeMillis();
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
