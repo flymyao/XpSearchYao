@@ -1,14 +1,6 @@
 package com.example.xpsearchyao;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.britesnow.snow.util.PackageScanner;
-import com.britesnow.snow.web.binding.EntityClasses;
-import com.example.xpsearchyao.entity.BaseEntity;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 
 /**
  * TODO: Rename the package and the class name to fit your application naming convention and 
@@ -18,31 +10,9 @@ import com.google.inject.Singleton;
  * 
  */
 public class AppConfig extends AbstractModule {
-    private static Logger log = LoggerFactory.getLogger(AppConfig.class);
-    
     @Override
     protected void configure() {
     }
 
-    
-    // Used by the Snow Hibernate helpers to inject the entity class
-    // Just need to provide the @EntityClasses
-    @Provides
-    @Singleton
-    @EntityClasses
-    public Class[] provideEntityClasses() {
-        // The simplest implementation, would be to hardcode like
-        // return new Class[]{com.example.samplebookmarks.entity.User.class,
-        //                    com.example.samplebookmarks.entity.Item.class};
-        
-        // However, with few more line of code, we can have a maintenance free implementation 
-        // by scanning the application entity.* java package.
-        try {
-            return new PackageScanner(BaseEntity.class.getPackage().getName()).findAnnotatedClasses(javax.persistence.Entity.class);
-        } catch (Throwable e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException("Cannot get all the enity class: " + e.getMessage());
-        }
-
-    }
+   
 }
