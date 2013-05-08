@@ -11,7 +11,7 @@ import java.util.Map;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
-import com.example.xpsearchyao.hook.DbConnectionManager;
+import com.example.xpsearchyao.DbConnectionManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
