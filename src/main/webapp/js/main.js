@@ -1,10 +1,10 @@
 var app = app||{};
 
 (function($){
-  app.import=function(name){
+   app.importData=function(name){
 	  $.ajax({
-		  url:"/api/import"+name,
-		  type:"Post",
+		  url:"/api/import/"+name,
+		  type:"Get",
 		  dataType:"json"
 	  }).done(function(data){
 		  alert("data for "+name+" importing successfully.");
