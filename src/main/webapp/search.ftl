@@ -13,4 +13,8 @@
   	<div class="details">${result.body}</div>
   	[/#list]
   <div>
+  
+   <div>
+  	<input type="button" value="Import Data(Post)" class="btn btn-primary import" onClick="app.importData('Post');"/>
+  </div>
 </div>
