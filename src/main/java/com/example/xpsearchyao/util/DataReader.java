@@ -40,7 +40,7 @@ public class DataReader {
                 Map map = new HashMap();
                 NamedNodeMap nameMap = entityNode.getAttributes();
                 for (int index=0,length = nameMap.getLength();index<length;index++) {
-                	map.put(nameMap.item(index).getNodeName().toLowerCase(), nameMap.item(index).getNodeValue());
+                	map.put(nameMap.item(index).getNodeName().toLowerCase(),getString( nameMap.item(index).getNodeValue()));
                 }
                 list.add(map);
             }
@@ -57,6 +57,14 @@ public class DataReader {
         return list;
     }
     
-    public static void main(String[] args) {
-	}
+   private static String getString(Object o){
+	   if(o==null){
+		   return "";
+	   }
+	   return o.toString().replaceAll("\'", "''");
+   }
+   
+   public static void main(String[] args) {
+	System.out.println(getString("i\'hav'e"));
+}
 }
