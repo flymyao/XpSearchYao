@@ -21,9 +21,11 @@ import org.xml.sax.SAXException;
 
 public class DataReader {
 
-    static String dataPath = "C:/apps/data/";
+    static String dataPath = new File("").getAbsolutePath()+"/tmp/imports/";
 
     public static List<Map> readXML(String path) {
+    	path+="s.xml";
+    	System.out.println(dataPath+path);
         List<Map> list = new ArrayList();
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -38,7 +40,7 @@ public class DataReader {
                 Map map = new HashMap();
                 NamedNodeMap nameMap = entityNode.getAttributes();
                 for (int index=0,length = nameMap.getLength();index<length;index++) {
-                	map.put(nameMap.item(index).getNodeName(), nameMap.item(index).getNodeValue());
+                	map.put(nameMap.item(index).getNodeName().toLowerCase(),getString( nameMap.item(index).getNodeValue()));
                 }
                 list.add(map);
             }
@@ -55,4 +57,14 @@ public class DataReader {
         return list;
     }
     
+   private static String getString(Object o){
+	   if(o==null){
+		   return "";
+	   }
+	   return o.toString().replaceAll("\'", "''");
+   }
+   
+   public static void main(String[] args) {
+	System.out.println(getString("i\'hav'e"));
+}
 }
