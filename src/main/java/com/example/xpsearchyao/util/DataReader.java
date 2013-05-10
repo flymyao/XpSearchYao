@@ -62,7 +62,7 @@ public class DataReader {
 	}
 	
    private static String getString(Object o){
-	   if(o==null){
+	   if(o==null||o.equals("null")){
 		   return "";
 	   }
 	   return o.toString().replaceAll("\'", "''");
