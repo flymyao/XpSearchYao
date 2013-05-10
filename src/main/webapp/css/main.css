@@ -14,28 +14,52 @@ em{
   color: #5588bb;
 }
 
-section.content{
-  width: 80%;
-  padding: 0 20px 20px 20px;
-  margin: 0 auto 0 auto;
-  background: #fff;
-  border: solid 2px #ddd;  
+.mainPage{
+	margin-top:15%;
+	text-align: center;
 }
 
-
-#userInfo label{
-  color: #ddd;
-  float: right;
-  display: block;
-  margin: 10px 0 0 0 ;
+.header{
+	font-size: 30px;
+	line-height: 30px;
 }
 
 .searchForm{
-	margin:10px auto;
+	width: 700px;
+	margin:15px auto;
 }
 
 .searchInput{
-	width:400px;
+	width:555px;
+}
+
+.btns{
+	text-align: center;	
+}
+
+.searchBtn{
+	margin-top: -25px;
+}
+
+.nav{
+	display: inline-block;
+	margin: 0;	
+}
+
+.importType{
+	width:auto;	
+}
+
+.resultsPage{
+	margin:15px;
+	width:auto;
+}
+
+.logo{
+	font-size: 17px;
+	color: rgb(61, 146, 213);
+	line-height: 30px;
+	font-weight: bold;
 }
 
 .results{
@@ -46,12 +70,3 @@ section.content{
 	color: #12c;
 }
 
-.details{
-	
-}
-
-.import{
-	position:absolute;
-	right:20px;
-	top:10px;
-}
