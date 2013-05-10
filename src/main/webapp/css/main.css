@@ -37,6 +37,19 @@ em{
 	text-align: center;	
 }
 
+.searchBtn{
+	margin-top: -20px;
+}
+
+.nav{
+	display: inline-block;
+	margin: 0;	
+}
+
+.importType{
+	width:auto;	
+}
+
 .resultsPage{
 	margin:15px;
 	width:auto;

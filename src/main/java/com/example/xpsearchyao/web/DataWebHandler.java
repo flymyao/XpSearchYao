@@ -46,6 +46,7 @@ public class DataWebHandler {
 					.append(getString(m.get("tag"))).append(",")
 					.append(getString(m.get("title"))).append(",")
 					.append(m.get("viewcount")).append("),");
+				break;
 			}
 		}else if(table.equals(Table.Comment)){
 			sql.append("insert into xpsearchyao_schema.").append(table)
@@ -59,6 +60,7 @@ public class DataWebHandler {
 					.append(m.get("userid")).append("),");
 			}
 		}
+		System.out.println(sql);
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.substring(0,sql.length()-1));
 		statement.execute();
 		return result;
@@ -74,7 +76,7 @@ public class DataWebHandler {
 	
 	private String getString(Object src){
 		if(src==null){
-			return "";
+			return "''";
 		}else {
 			return "'"+(String)src+"'";
 			}

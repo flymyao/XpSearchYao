@@ -10,7 +10,7 @@
     <script type="text/javascript" src="${_r.contextPath}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${_r.contextPath}/js/main.js"></script>
     <script type="text/javascript" src="${_r.contextPath}/js/brite-snapshot.js"></script>
-    
+    <script type="text/javascript" src="${_r.contextPath}/js/bootstrap-dropdown.js"></script>
   </head>
 
   <body>
