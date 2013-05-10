@@ -23,19 +23,27 @@ section.content{
 }
 
 
-#userInfo label{
-  color: #ddd;
-  float: right;
-  display: block;
-  margin: 10px 0 0 0 ;
+.mainPage{
+	margin-top:15%;
+	text-align: center;
 }
 
-.searchForm{
-	margin:10px auto;
+.header{
+	font-size: 30px;
+	line-height: 30px;
 }
+.searchForm{
+	width: 555px;
+	margin:15px auto;
+}
+
 
 .searchInput{
-	width:400px;
+	width:555px;
+}
+
+.btns{
+	text-align: center;	
 }
 
 .results{
@@ -46,12 +54,3 @@ section.content{
 	color: #12c;
 }
 
-.details{
-	
-}
-
-.import{
-	position:absolute;
-	right:20px;
-	top:10px;
-}
