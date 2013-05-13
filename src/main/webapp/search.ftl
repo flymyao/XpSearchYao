@@ -8,7 +8,7 @@
  		<div class="results">
 	  	[#list results as result]
 	  	[#if result.title??]
-	  	<div class="title">[#if result.title=='null']No title[#else]${result.title}[/#if]</div>
+	  	<div class="title">${result_index+(pg-1)*10+1}&nbsp;[#if result.title=='null']No title[#else]${result.title}[/#if]</div>
 	  	[/#if]
 	  	<div class="details">${result.body}</div>
 	  	[/#list]
