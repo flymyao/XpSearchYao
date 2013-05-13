@@ -10,4 +10,12 @@ var app = app||{};
 		  alert("data for "+name+" importing successfully.");
 	  });
   }
+   
+   app.turn=function(current,type,keywords){
+	   if(+current+type==0){
+		   alert("this is the first page");
+		   return false;
+	   }
+	   window.location.href="?keywords="+keywords+"&pg="+(+current+type);
+   }
 })(jQuery);

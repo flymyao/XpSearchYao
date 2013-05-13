@@ -12,4 +12,8 @@
   	<div class="details">${result.body}</div>
   	[/#list]
   <div>
+  <div>
+  	<button class="btn" onclick="app.turn('${pg}',-1,'${keywords}')">Prev</button>
+  	<button class="btn" onclick="app.turn('${pg}',1,'${keywords}')">Next</button>
+  </div>
 </div>
