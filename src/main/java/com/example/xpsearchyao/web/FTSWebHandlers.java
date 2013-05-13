@@ -22,7 +22,10 @@ public class FTSWebHandlers {
 	private DbConnectionManager dbConnectionManager;
 	
 	@WebModelHandler(startsWith="/search")
-	public void search(@WebModel Map m, @WebParam("keywords")String keywords) throws SQLException{
+	public void search(@WebModel Map m, @WebParam("keywords")String keywords,@WebParam("pg")Integer pg) throws SQLException{
+		if(pg==null||pg<1){
+			pg = 1;
+		}
 		List<Map> results = new ArrayList<Map>();
 		StringBuffer sql = new StringBuffer();
 		sql.append("select ")
@@ -43,7 +46,9 @@ public class FTSWebHandlers {
 		.append("  ttsv @@ plainto_tsquery('")
 		.append(keywords)
 		.append(" ')")
-		.append(" order by titleRank,bodyRank desc");
+		.append(" order by titleRank,bodyRank desc  offset ")
+		.append((pg-1)*10)
+		.append(" limit 10");
 		Long startTime = System.currentTimeMillis();
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		ResultSet resultSet = statement.executeQuery();
@@ -55,10 +60,11 @@ public class FTSWebHandlers {
 		}
 		m.put("results", results);
 		m.put("keywords", keywords);
+		m.put("pg", pg);
+		m.put("costTime", (" cost time:"+(System.currentTimeMillis()-startTime)+"millis"));
 		resultSet.close();
 		statement.close();
 		
-		System.out.println(keywords+" cost time:"+(System.currentTimeMillis()-startTime)+"millis");
 	}
 	
 }
