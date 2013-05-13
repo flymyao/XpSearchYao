@@ -53,6 +53,7 @@ em{
 .resultsPage{
 	margin:15px;
 	width:auto;
+	font-size: 16px;
 }
 
 .logo{
@@ -64,9 +65,19 @@ em{
 
 .results{
 	padding:10px;	
+	padding-left: 80px;
 }
 
 .title{
 	color: #12c;
 }
 
+.details{
+	font-size: 13px;
+	margin-bottom: 23px;	
+}
+
+b{
+	font-weight: normal;
+	color: red;
+}
