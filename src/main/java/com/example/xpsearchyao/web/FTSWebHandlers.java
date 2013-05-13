@@ -61,10 +61,10 @@ public class FTSWebHandlers {
 		m.put("results", results);
 		m.put("keywords", keywords);
 		m.put("pg", pg);
+		m.put("costTime", (" cost time:"+(System.currentTimeMillis()-startTime)+"millis"));
 		resultSet.close();
 		statement.close();
 		
-		System.out.println(keywords+" cost time:"+(System.currentTimeMillis()-startTime)+"millis");
 	}
 	
 }
