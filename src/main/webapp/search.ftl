@@ -7,7 +7,7 @@
   <div class="results">
   	[#list results as result]
   	[#if result.title??]
-  	<div class="title">${result.title}</div>
+  	<div class="title">[#if result.title=='null']No title[#else]${result.title}[/#if]</div>
   	[/#if]
   	<div class="details">${result.body}</div>
   	[/#list]
