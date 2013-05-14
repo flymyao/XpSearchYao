@@ -22,32 +22,54 @@ public class FTSWebHandlers {
 	private DbConnectionManager dbConnectionManager;
 	
 	@WebModelHandler(startsWith="/search")
-	public void search(@WebModel Map m, @WebParam("keywords")String keywords,@WebParam("pg")Integer pg) throws SQLException{
+	public void search(@WebModel Map m, @WebParam("keywords")String keywords,@WebParam("pg")Integer pg,@WebParam("type")String type) throws SQLException{
 		if(pg==null||pg<1){
 			pg = 1;
 		}
+		if(type==null){
+			type="default";
+		}
 		List<Map> results = new ArrayList<Map>();
 		StringBuffer sql = new StringBuffer();
-		sql.append("select ")
-		.append("ts_headline(title, plainto_tsquery('")
-		.append(keywords).append("'))  as title ")
-		.append(",ts_headline(body, plainto_tsquery('")
-		.append(keywords).append("'))  as body ")
-		.append(",ts_rank(btsv, plainto_tsquery('")
-		.append(keywords)
-		.append("')) as bodyRank ")
-		.append(",ts_rank(ttsv, plainto_tsquery('")
-		.append(keywords)
-		.append("')) as titleRank ")
-		.append(" from xpsearchyao_schema.post ")
-		.append(" where btsv @@ plainto_tsquery('")
-		.append(keywords)
-		.append(" ') or  ")
-		.append("  ttsv @@ plainto_tsquery('")
-		.append(keywords)
-		.append(" ')")
-		.append(" order by titleRank,bodyRank desc  offset ")
-		.append((pg-1)*10)
+		sql.append("select ");
+		if("title".equals(type)){
+			sql.append("ts_headline(title, plainto_tsquery('")
+			.append(keywords).append("'))  as title ,body")
+			.append(",ts_rank(ttsv, plainto_tsquery('")
+			.append(keywords)
+			.append("')) as titleRank ")
+			.append(" from xpsearchyao_schema.post ")
+			.append(" where ")
+			.append("  ttsv @@ plainto_tsquery('")
+			.append(keywords)
+			.append(" ')")
+			.append(" order by titleRank desc  offset ");
+		}else if("body".equals(type)){
+			sql.append("title,ts_headline(body, plainto_tsquery('")
+			.append(keywords).append("'))  as body ")
+			.append(",ts_rank(btsv, plainto_tsquery('")
+			.append(keywords)
+			.append("')) as bodyRank ")
+			.append(" from xpsearchyao_schema.post ")
+			.append(" where btsv @@ plainto_tsquery('")
+			.append(keywords)
+			.append(" ') ")
+			.append(" order by bodyRank desc  offset ");
+		}else if("default".equals(type)){
+			sql.append("ts_headline(title, plainto_tsquery('")
+			.append(keywords).append("'))  as title, ")
+			.append("ts_headline(body, plainto_tsquery('")
+			.append(keywords).append("'))  as body ")
+			.append(",ts_rank(tsv, plainto_tsquery('")
+			.append(keywords)
+			.append("')) as rank ")
+			.append(" from xpsearchyao_schema.post ")
+			.append(" where tsv @@ plainto_tsquery('")
+			.append(keywords)
+			.append(" ')")
+			.append(" order by rank desc  offset ");
+		}
+		sql.append((pg-1)*10)
 		.append(" limit 10");
 		Long startTime = System.currentTimeMillis();
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
@@ -61,6 +83,7 @@ public class FTSWebHandlers {
 		m.put("results", results);
 		m.put("keywords", keywords);
 		m.put("pg", pg);
+		m.put("type", type);
 		m.put("costTime", (" cost time:"+(System.currentTimeMillis()-startTime)+"millis"));
 		resultSet.close();
 		statement.close();

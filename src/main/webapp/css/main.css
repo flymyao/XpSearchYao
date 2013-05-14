@@ -33,6 +33,16 @@ em{
 	width:555px;
 }
 
+.typeContainer label{
+		display:inline-block;
+		width:auto;
+		margin-left:10px;
+}	
+
+.typeContainer label [type="radio"]{
+		margin-top: -2px;
+}
+
 .btns{
 	text-align: center;	
 }

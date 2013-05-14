@@ -19,7 +19,7 @@ public class DataWebHandler {
 	private DbConnectionManager dbConnectionManager;
 	
 	enum Table{
-		Post,Comment
+		Post,Comment,User
 	}
 	@WebGet("/api/import/{name}")
 	public Map<String,Object> importData(@PathVar("name")Table table) throws SQLException{
@@ -59,8 +59,26 @@ public class DataWebHandler {
 					.append(getDateString(m.get("creationdate"))).append(",")
 					.append(m.get("userid")).append("),");
 			}
+		}else if(table.equals(Table.User)){
+			sql.append("insert into xpsearchyao_schema.").append(table)
+			.append(" (id,reputation,creationdate,aboutme,displayname,lastaccessdate,")
+			.append("location,views,upvotes,downvotes,emailhash)")
+			.append(" values ");
+			for(Map m:DataReader.readXML(table.name())){
+				sql.append("(").append(m.get("id")).append(",")
+					.append(m.get("reputation")).append(",")
+					.append(getDateString(m.get("creationdate"))).append(",")
+					.append(getString(m.get("aboutme"))).append(",")
+					.append(getString(m.get("displayname"))).append(",")
+					.append(getDateString(m.get("lastaccessdate"))).append(",")
+					.append(getString(m.get("location"))).append(",")
+					.append(m.get("views")).append(",")
+					.append(m.get("upvotes")).append(",")
+					.append(m.get("downvotes")).append(",")
+					.append(getString(m.get("emailhash"))).append("),");
+			}
+			
 		}
-		System.out.println(sql);
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.substring(0,sql.length()-1));
 		statement.execute();
 		return result;
