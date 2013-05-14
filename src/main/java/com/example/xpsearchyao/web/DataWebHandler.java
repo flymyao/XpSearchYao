@@ -76,11 +76,9 @@ public class DataWebHandler {
 					.append(m.get("upvotes")).append(",")
 					.append(m.get("downvotes")).append(",")
 					.append(getString(m.get("emailhash"))).append("),");
-				break;
 			}
 			
 		}
-		System.out.println(sql);
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.substring(0,sql.length()-1));
 		statement.execute();
 		return result;
