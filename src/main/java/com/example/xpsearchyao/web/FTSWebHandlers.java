@@ -60,20 +60,14 @@ public class FTSWebHandlers {
 			.append(keywords).append("'))  as title, ")
 			.append("ts_headline(body, plainto_tsquery('")
 			.append(keywords).append("'))  as body ")
-			.append(",ts_rank(ttsv, plainto_tsquery('")
+			.append(",ts_rank(tsv, plainto_tsquery('")
 			.append(keywords)
-			.append("')) as titleRank ")
-			.append(",ts_rank(btsv, plainto_tsquery('")
-			.append(keywords)
-			.append("')) as bodyRank ")
+			.append("')) as rank ")
 			.append(" from xpsearchyao_schema.post ")
-			.append(" where btsv @@ plainto_tsquery('")
-			.append(keywords)
-			.append(" ') or  ")
-			.append("  ttsv @@ plainto_tsquery('")
+			.append(" where tsv @@ plainto_tsquery('")
 			.append(keywords)
 			.append(" ')")
-			.append(" order by titleRank,bodyRank desc  offset ");
+			.append(" order by rank desc  offset ");
 		}
 		sql.append((pg-1)*10)
 		.append(" limit 10");
