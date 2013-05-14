@@ -23,6 +23,7 @@
 					    <ul class="dropdown-menu">
 					      <li><a href="#"  onClick="app.importData('Post');">Post</a></li>
 					      <li><a href="#"  onClick="app.importData('Comment');">Comment</a></li>
+					        <li><a href="#"  onClick="app.importData('User');">User</a></li>
 					    </ul>
 					  </li>
 					</ul>
