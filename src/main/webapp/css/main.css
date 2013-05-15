@@ -96,3 +96,13 @@ b{
 	font-size: 14px;
 	margin-bottom:10px;
 }
+
+.ControlBar{
+	position:absolute;
+}
+
+.MainScreen-main{
+	height:100%;
+	position: absolute;
+	width: 100%;
+}

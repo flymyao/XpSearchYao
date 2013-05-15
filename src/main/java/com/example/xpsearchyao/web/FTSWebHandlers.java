@@ -93,4 +93,8 @@ public class FTSWebHandlers {
 		
 	}
 	
+	@WebModelHandler(startsWith="/relation")
+	public void showRealtion(){
+		
+	}
 }
