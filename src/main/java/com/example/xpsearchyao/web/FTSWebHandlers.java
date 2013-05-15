@@ -38,7 +38,7 @@ public class FTSWebHandlers {
 			.append(",ts_rank(ttsv, plainto_tsquery('")
 			.append(keywords)
 			.append("')) as titleRank ")
-			.append(" from xpsearchyao_schema.post ")
+			.append(" from xpsearchyao_schema.post")
 			.append(" where ")
 			.append("  ttsv @@ plainto_tsquery('")
 			.append(keywords)
@@ -56,21 +56,23 @@ public class FTSWebHandlers {
 			.append(" ') ")
 			.append(" order by bodyRank desc  offset ");
 		}else if("default".equals(type)){
-			sql.append("ts_headline(title, plainto_tsquery('")
+			sql.append("ts_headline(post.title, plainto_tsquery('")
 			.append(keywords).append("'))  as title, ")
-			.append("ts_headline(body, plainto_tsquery('")
+			.append("ts_headline(post.body, plainto_tsquery('")
 			.append(keywords).append("'))  as body ")
-			.append(",ts_rank(tsv, plainto_tsquery('")
+			.append(",ts_rank(post.tsv, plainto_tsquery('")
 			.append(keywords)
 			.append("')) as rank ")
-			.append(" from xpsearchyao_schema.post ")
-			.append(" where tsv @@ plainto_tsquery('")
+			.append(",users.displayname as name")
+			.append(" from xpsearchyao_schema.post post join xpsearchyao_schema.user users on users.id=post.owneruserid ")
+			.append(" where post.tsv @@ plainto_tsquery('")
 			.append(keywords)
 			.append(" ')")
 			.append(" order by rank desc  offset ");
 		}
 		sql.append((pg-1)*10)
 		.append(" limit 10");
+		System.out.println(sql.toString());
 		Long startTime = System.currentTimeMillis();
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		ResultSet resultSet = statement.executeQuery();
@@ -78,6 +80,7 @@ public class FTSWebHandlers {
 			Map map = new HashMap();
 			map.put("title", resultSet.getString("title"));
 			map.put("body", resultSet.getString("body"));
+			map.put("name", resultSet.getString("name"));
 			results.add(map);
 		}
 		m.put("results", results);
