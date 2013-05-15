@@ -11,6 +11,7 @@ import java.util.Map;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
+import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.example.xpsearchyao.DbConnectionManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -95,9 +96,30 @@ public class FTSWebHandlers {
 	}
 	
 	@WebModelHandler(startsWith="/relation")
-	public void showRealtion(){
+	public void showRealtion(@WebModel Map m) throws SQLException{
 		
 	}
 	
-	
+	@WebGet("/getUsers")
+	public Map getUsers() throws SQLException{
+		List<Map> results = new ArrayList<Map>();
+		String sql = "select c.userid,p.id,u.displayname from xpsearchyao_schema.comment c join  xpsearchyao_schema.Post p " +
+				"on c.postid = p.id and p.id = 294 join xpsearchyao_schema.user  u on u.id = c.userid";
+		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		ResultSet resultSet = statement.executeQuery();
+		while(resultSet.next()){
+			Map map = new HashMap();
+			map.put("id", resultSet.getString("userid"));
+			map.put("name", resultSet.getString("displayname"));
+			map.put("parentId",1);
+			map.put("weight", 1);
+			map.put("children",new HashMap());
+			results.add(map);
+		}
+		Map m = new HashMap();
+		m.put("friends", results);
+		m.put("id", 1);
+		m.put("name", "John");
+		return m;
+	}
 }

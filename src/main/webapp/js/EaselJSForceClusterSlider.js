@@ -21,9 +21,19 @@
                	var scaleVal = $e.closest(".MainScreen").find(".ControlBar #sl2").val();
               	view.scaleVal = scaleVal/100;
               	
-                app.ContactDao.get().done(function(chartData){
+              	$.ajax({
+              		url:'/getUsers',
+              		dataType:'json',
+              		type:'Get',
+              		success:function(data){
+              			data.children = data.friends;
+              			console.log(data);
+              			view.showView(data);
+              		}
+              	})
+               /* app.ContactDao.get().done(function(chartData){
                 	view.showView(chartData);
-				});
+				});*/
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
@@ -92,6 +102,9 @@
         		var parentName = data.name;
       			//sort the weight
 				var childrenData = data.children;
+				if(!childrenData){
+					return ;
+				}
 				childrenData.sort(weightSort);
 				
 				//put the root data as the first one
