@@ -11,6 +11,7 @@
 	  	<div class="title">${result_index+(pg-1)*10+1}&nbsp;[#if result.title=='null']No title[#else]${result.title}[/#if]</div>
 	  	[/#if]
 	  	<div class="details">${result.body}</div>
+	  	<div class="tag">${result.tag}</div>
 	  	<div class="author">owned by ${result.name}</div>
 	  	[/#list]
  	  <div>
