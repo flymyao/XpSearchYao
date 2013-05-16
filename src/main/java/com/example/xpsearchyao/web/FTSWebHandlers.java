@@ -22,8 +22,8 @@ public class FTSWebHandlers {
 	@Inject
 	private DbConnectionManager dbConnectionManager;
 	
-	@WebModelHandler(startsWith="/search")
-	public void search(@WebModel Map m, @WebParam("keywords")String keywords,@WebParam("pg")Integer pg,@WebParam("type")String type) throws SQLException{
+	@WebGet("/search")
+	public Map search(@WebParam("keywords")String keywords,@WebParam("pg")Integer pg,@WebParam("type")String type) throws SQLException{
 		if(pg==null||pg<1){
 			pg = 1;
 		}
@@ -85,6 +85,7 @@ public class FTSWebHandlers {
 			map.put("tag", resultSet.getString("tag"));
 			results.add(map);
 		}
+		Map m = new HashMap();
 		m.put("results", results);
 		m.put("keywords", keywords);
 		m.put("pg", pg);
@@ -92,7 +93,7 @@ public class FTSWebHandlers {
 		m.put("costTime", (" cost time:"+(System.currentTimeMillis()-startTime)+"millis"));
 		resultSet.close();
 		statement.close();
-		
+		return m;
 	}
 	
 	@WebModelHandler(startsWith="/relation")
