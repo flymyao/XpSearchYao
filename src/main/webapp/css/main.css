@@ -99,6 +99,7 @@ b{
 
 .ControlBar{
 	position:absolute;
+	z-index: 2;
 }
 
 .MainScreen-main{
