@@ -12,7 +12,7 @@
                 var $e = view.$el;
                 view.level = view.level || 2;
                 view.scaleVal = view.scaleVal || 1;
-                
+                $e.find(".ControlBar").hide();
                 $e.find("li.d3jsPart").hide();
                 $e.find("li.fabricjsPart").hide();
                 
@@ -95,20 +95,12 @@
             		$li.addClass("active");
             		var menu = $li.attr("data-nav");
             		
-            		if(menu == "UserWeight"){
-            		  	brite.display("UserWeight");
-            		}else if(menu == "UserWeightD3"){
-            		  	brite.display("UserWeightD3");
-            		}else if(menu == "UserWeightD3Cluster"){
-            		  	brite.display("UserWeightD3Cluster");
-            		}else if(menu == "D3JSContactCluster"){
-            		  	brite.display("D3JSContactCluster");
-            		}else if(menu == "EaselJSForceClusterSlider"){
+            		if(menu == "Search"){
+            		  	brite.display("Search");
+            		  	$e.find(".ControlBar").hide();
+            		}else if(menu == "ContactCluster"){
             		  	brite.display("EaselJSForceClusterSlider");
-            		}else if(menu == "EaselJSForceClusterSlider2"){
-            		  	brite.display("EaselJSForceClusterSlider2");
-            		}else if(menu == "FabricJSContactCluster"){
-            		  	brite.display("FabricJSContactCluster");
+            		  	$e.find(".ControlBar").show();
             		}
             	}
             }

@@ -25,6 +25,8 @@
   </head>
 
   <body>
-      [@includeFrameContent /]
+      <script>
+      	brite.display("MainScreen","body");
+      </script>
   </body>
 </html>
