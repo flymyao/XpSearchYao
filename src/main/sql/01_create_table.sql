@@ -49,3 +49,10 @@ CREATE TABLE xpsearchyao_schema."user"
   views bigint,
   CONSTRAINT user_pkey PRIMARY KEY (id)
 )
+
+CREATE TABLE xpsearchyao_schema.userpostrel
+(
+  userid bigint NOT NULL,
+  postid bigint NOT NULL,
+  CONSTRAINT userpostrel_pkey PRIMARY KEY (userid, postid)
+)
