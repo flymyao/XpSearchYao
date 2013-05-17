@@ -104,13 +104,16 @@ b{
 
 .MainScreen-main{
 	position: absolute;
-	top:43px;
+	top:113px;
 	right: 0;
 	bottom: 0;
 	left: 0;
 	overflow: auto;
 }
 
+.searchResult{
+	top:43px;
+}
 .ReportHeader {
   position: absolute;
   top: 0;
@@ -160,5 +163,4 @@ b{
 
 .EaselJSForceClusterSlider{
 	height: 100%;
-	margin-top: 60px;
 }

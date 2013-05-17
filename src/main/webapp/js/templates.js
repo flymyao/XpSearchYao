@@ -90,3 +90,12 @@ function program1(depth0,data) {
   buffer += "\n 	  <div>\n    <div>\n  	  <button class=\"btn\" data-turn=\"prev\">Prev</button>\n  	  <button class=\"btn\" data-turn=\"next\">Next</button>\n    </div>\n</div>";
   return buffer;}
 );
+
+// template --- tmpl-TagCluster ---
+Handlebars.templates['tmpl-TagCluster'] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<div class=\"mainPage\">\n	Tag Cluster	\n</div>";}
+);

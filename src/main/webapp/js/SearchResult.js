@@ -1,7 +1,7 @@
 (function(){
 	brite.registerView("SearchResult",{parent:".MainScreen-main",emptyParent:true},{
 		create:function(data,config){
-			console.log(data);
+			$(".MainScreen-main").css("top","43px");
 			return app.render("tmpl-SearchResult",{data:data});
 		},
 		events:{
