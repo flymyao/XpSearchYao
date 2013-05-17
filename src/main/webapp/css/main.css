@@ -104,7 +104,7 @@ b{
 
 .MainScreen-main{
 	position: absolute;
-	top:113px;
+	top:43px;
 	right: 0;
 	bottom: 0;
 	left: 0;
@@ -143,8 +143,11 @@ b{
 }
 .ReportHeader .ControlBar .toolItems .toolbar-item input {
   margin: 0 0 5px 10px;
-  height: 10px;
 }
+.ReportHeader .ControlBar .toolItems .toolbar-item input[type="text"] {
+  height:10px;
+}
+
 .ReportHeader .ControlBar .toolItems .toolbar-item span {
   margin-right: 10px;
   margin-left: 5px;
@@ -157,4 +160,5 @@ b{
 
 .EaselJSForceClusterSlider{
 	height: 100%;
+	margin-top: 60px;
 }
