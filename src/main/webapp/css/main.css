@@ -15,7 +15,7 @@ em{
 }
 
 .mainPage{
-	margin-top:15%;
+	margin-top:10%;
 	text-align: center;
 }
 
@@ -103,7 +103,58 @@ b{
 }
 
 .MainScreen-main{
-	height:100%;
 	position: absolute;
-	width: 100%;
+	top:113px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: auto;
+}
+
+.ReportHeader {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.ReportHeader .ControlBar {
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+}
+.ReportHeader .ControlBar .toolItems {
+  position: relative;
+  min-width: 430px;
+  height: 30px;
+  margin: 5px 10px;
+}
+.ReportHeader .ControlBar .toolItems .toolbar-item {
+  position: relative;
+  min-width: 100px;
+  float: left;
+  margin: 5px 5px 5px 5px;
+}
+.ReportHeader .ControlBar .toolItems .toolbar-item label {
+  float: left;
+}
+.ReportHeader .ControlBar .toolItems .toolbar-item .toolbar-item-content {
+  float: left;
+  margin: 0 0 0 5px;
+}
+.ReportHeader .ControlBar .toolItems .toolbar-item input {
+  margin: 0 0 5px 10px;
+  height: 10px;
+}
+.ReportHeader .ControlBar .toolItems .toolbar-item span {
+  margin-right: 10px;
+  margin-left: 5px;
+}
+.ReportHeader .ControlBar .toolItems .toolbar-button {
+  position: relative;
+  float: right;
+  margin: 5px 5px 5px 5px;
+}
+
+.EaselJSForceClusterSlider{
+	height: 100%;
 }
