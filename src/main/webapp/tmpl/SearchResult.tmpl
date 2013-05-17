@@ -1,5 +1,5 @@
 <script id="tmpl-SearchResult" type="text/html">
-<div class="resultsPage">
+<div class="resultsPage" data-pg = "{{data.pg}}" data-keywords="{{data.keywords}}">
 	  <form class="form-inline" action="search">
 	  	<span class="logo">FTS Demo</span>
 	  	<input type="text" placeholder="search keywords" name="keywords" class="searchInput" value="{{data.keywords}}"/>
@@ -15,8 +15,8 @@
 	  	{{/each}}
  	  <div>
     <div>
-  	  <button class="btn" onclick="app.turn('${pg}',-1,'{{data.keywords}}')">Prev</button>
-  	  <button class="btn" onclick="app.turn('${pg}',1,'{{data.keywords}}')">Next</button>
+  	  <button class="btn" data-turn="prev">Prev</button>
+  	  <button class="btn" data-turn="next">Next</button>
     </div>
 </div>
 </script>

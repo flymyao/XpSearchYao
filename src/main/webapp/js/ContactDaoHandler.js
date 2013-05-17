@@ -65,6 +65,26 @@
 		}
 		return resultSet;
 	}
+	
+	ContactDaoHandler.prototype.getById = function(id) {
+		var objectType = this._entityType;
+		var resultSet = {};
+		var dataSet = app.dataSet;
+
+		return $.ajax({
+			url:'/getUsers',
+			data:{
+				userId:id
+			},
+			dataType:'json'
+			
+		}).done(function(data){
+			data.children = data.friends;
+			console.log(data);
+			return data;
+		});
+	}
+	
 	ContactDaoHandler.prototype.update = function(data) {
 		app.dataSet = data;
 		return data;

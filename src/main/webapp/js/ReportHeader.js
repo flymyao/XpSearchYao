@@ -101,6 +101,11 @@
             		}else if(menu == "ContactCluster"){
             		  	brite.display("EaselJSForceClusterSlider");
             		  	$e.find(".ControlBar").show();
+            		  	$(".MainScreen-main").css("top","113px");
+            		}else if(menu == "TagCluster"){
+            		  	brite.display("TagCluster");
+            		  	$e.find(".ControlBar").show();
+            			$(".MainScreen-main").css("top","113px");
             		}
             	}
             }

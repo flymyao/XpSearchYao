@@ -27,19 +27,20 @@
               		type:'Get',
               		success:function(data){
               			data.children = data.friends;
-              			console.log(data);
               			view.showView(data);
               		}
               	})
-               /* app.ContactDao.get().done(function(chartData){
-                	view.showView(chartData);
-				});*/
+                app.ContactDao.get().done(function(chartData){
+                	//view.showView(chartData);
+                	//console.log(chartData);
+				});
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
 					var view = this;
 					view.level = extra.level;
-	                app.ContactDao.getByName(view.rootName).done(function(chartData){
+	                //app.ContactDao.getByName(view.rootName).done(function(chartData){
+					app.ContactDao.getById(view.uid).done(function(chartData){
 		                view.showView(chartData);
 					});
 				},
@@ -68,7 +69,7 @@
                 view.newContainerName = "newContainer";
                 view.cName = "centerCircle";
                 view.rootName = data.name;
-                
+                view.uid = data.id;
 				createjs.Ticker.useRAF = app.useRAF;
 				createjs.Ticker.setFPS(60);
 				
@@ -123,9 +124,8 @@
         			var cx = fpos[i].x;
 			        var cy = fpos[i].y;
 			        var cData = childrenData[i];
-			        
 			        var line = createLine.call(view,rx,ry,cx,cy,level);
-			        var node = createNodeCircle.call(view,cx,cy,cData.name,level);
+			        var node = createNodeCircle.call(view,cx,cy,cData.name,level,cData.id);
 			        containerRoot.addChild(line);
 			        containerRoot.addChild(node);
 			        node.originPotint = {cx:cx,cy:cy};
@@ -155,7 +155,7 @@
 			        
 			        //show the children level
 					if((level-1) > 0){
-						var newData = app.transformData(app.dataSet, cData.name, parentName);
+						var newData = cData;//app.transformData(app.dataSet, cData.name, parentName);
 						var newContainer = createContainer.call(view, newData, {x:cx, y:cy}, level-1, (Math.PI + angle* i)+exAngle);
 						node.relatedContainer = newContainer;
 						containerRoot.addChild(newContainer);
@@ -216,7 +216,7 @@
 				stage.update();
 			}
         	
-        	function createNodeCircle(cx,cy,cName,level){
+        	function createNodeCircle(cx,cy,cName,level,id){
         		var view = this;
 		      	var r = 5;
 		    	var color = _colors[view.level - level];
@@ -226,6 +226,7 @@
 		      		circle.x = cx;
 			        circle.y = cy;
 			        circle.name = cName;
+			        circle.uid = id;
 		      	return circle;
 		    }
 		    
@@ -284,10 +285,12 @@
       			statLayout.addChild(newCircle);
       				
       			statLayout.removeChild(d.target);
-      			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level);
+      			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.uid);
       			statLayout.addChild(node);
       			
-      			app.ContactDao.getByName(d.target.name).done(function(userData){
+      			//app.ContactDao.getByName(d.target.name).done(function(userData){
+      			app.ContactDao.getById(d.target.uid).done(function(userData){	
+      				console.log(userData);
 					//add new container
 					var newContainer = createContainer.call(view, userData, {x:view.canvasW/2, y: view.canvasH/2}, view.level, (Math.PI+d.target.angleVal),true);
 					    newContainer.name = view.newContainerName;
