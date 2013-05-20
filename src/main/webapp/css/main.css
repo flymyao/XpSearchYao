@@ -164,3 +164,9 @@ b{
 .EaselJSForceClusterSlider{
 	height: 100%;
 }
+
+.addTag{
+	position:absolute;;
+	right:0;
+	top:-5px;
+}

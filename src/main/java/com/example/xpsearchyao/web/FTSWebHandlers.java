@@ -12,6 +12,7 @@ import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.example.xpsearchyao.DbConnectionManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -168,6 +169,58 @@ public class FTSWebHandlers {
 		}
 		resultSet.close();
 		statement.close();
+		return m;
+	}
+	
+	@WebPost("/addTag")
+	public Map addTag(@WebParam("name") String name) throws SQLException{
+		Map m = new HashMap();
+		String sqlForId = "select nextval('id_seq')";
+		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sqlForId.toString());
+		ResultSet resultSet = statementForId.executeQuery();
+		Long id = 0L;
+		while(resultSet.next()){
+			id = resultSet.getLong(1);
+			break;
+		}
+		
+		String fts = "select id from xpsearchyao_schema.post where tsv @@ plainto_tsquery('"+name+"');";
+		PreparedStatement statementfts = dbConnectionManager.getConnection().prepareStatement(fts.toString());
+		ResultSet resultSetForFts = statementfts.executeQuery();
+		StringBuffer insertSql = new StringBuffer("insert into xpsearchyao_schema.tagpost(tagid,postid) values");
+		while(resultSetForFts.next()){
+			insertSql.append("(").append(id).append(",").append(resultSetForFts.getLong(1)).append("),");
+		}
+		
+		PreparedStatement ftsStatement = dbConnectionManager.getConnection().prepareStatement(insertSql.substring(0, insertSql.length()-1));
+		System.out.println(insertSql);
+		ftsStatement.execute();
+
+		
+		
+		
+		String sql = "insert into  xpsearchyao_schema.tag(id,name) values("+id+",'"+name+"')";
+		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		int result = statement.executeUpdate();
+		m.put("result", result);
+		return m;
+	}
+	
+	@WebGet("/getTagWithPost")
+	public Map getTagWithPost() throws SQLException{
+		Map m = new HashMap();
+		String sql = "select count(tp.tagid) as num,t.name  as name from xpsearchyao_schema.tagpost tp join  xpsearchyao_schema.tag t on t.id = tp.tagid group by tagid,t.name";
+		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		ResultSet resultSet = statementForId.executeQuery();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		while(resultSet.next()){
+			Map temp = new HashMap();
+			temp.put("name", resultSet.getString(2));
+			temp.put("num", resultSet.getLong(1));
+			list.add(temp);
+		}
+		m.put("result", list);
 		return m;
 	}
 }
