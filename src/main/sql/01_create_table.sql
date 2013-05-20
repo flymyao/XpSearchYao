@@ -56,3 +56,10 @@ CREATE TABLE xpsearchyao_schema.userpostrel
   postid bigint NOT NULL,
   CONSTRAINT userpostrel_pkey PRIMARY KEY (userid, postid)
 )
+
+CREATE TABLE xpsearchyao_schema.tag
+(
+  id bigint NOT NULL,
+  name character(256),
+  CONSTRAINT tag_pkey PRIMARY KEY (id)
+)
