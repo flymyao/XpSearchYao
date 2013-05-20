@@ -12,6 +12,7 @@ import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.example.xpsearchyao.DbConnectionManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -168,6 +169,16 @@ public class FTSWebHandlers {
 		}
 		resultSet.close();
 		statement.close();
+		return m;
+	}
+	
+	@WebPost("/addTag")
+	public Map addTag(@WebParam("name") String name) throws SQLException{
+		Map m = new HashMap();
+		String sql = "insert into  xpsearchyao_schema.tag(name) values('"+name+"')";
+		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		int result = statement.executeUpdate();
+		m.put("result", result);
 		return m;
 	}
 }

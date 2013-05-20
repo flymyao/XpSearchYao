@@ -63,3 +63,12 @@ CREATE TABLE xpsearchyao_schema.tag
   name character(256),
   CONSTRAINT tag_pkey PRIMARY KEY (id)
 )
+
+CREATE SEQUENCE id_seq
+    START WITH 1 
+    INCREMENT BY 1 
+    NO MINVALUE 
+    NO MAXVALUE 
+    CACHE 1; 
+    
+alter table xpsearchyao_schema.tag alter column id set default nextval('id_seq'); 
