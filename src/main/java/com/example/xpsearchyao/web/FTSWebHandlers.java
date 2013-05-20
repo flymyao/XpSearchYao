@@ -199,10 +199,28 @@ public class FTSWebHandlers {
 		
 		
 		
-		String sql = "insert into  xpsearchyao_schema.tag(name) values('"+name+"')";
+		String sql = "insert into  xpsearchyao_schema.tag(id,name) values("+id+",'"+name+"')";
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		int result = statement.executeUpdate();
 		m.put("result", result);
+		return m;
+	}
+	
+	@WebGet("/getTagWithPost")
+	public Map getTagWithPost() throws SQLException{
+		Map m = new HashMap();
+		String sql = "select count(tp.tagid) as num,t.name  as name from xpsearchyao_schema.tagpost tp join  xpsearchyao_schema.tag t on t.id = tp.tagid group by tagid,t.name";
+		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		ResultSet resultSet = statementForId.executeQuery();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		while(resultSet.next()){
+			Map temp = new HashMap();
+			temp.put("name", resultSet.getString(2));
+			temp.put("num", resultSet.getLong(1));
+			list.add(temp);
+		}
+		m.put("result", list);
 		return m;
 	}
 }
