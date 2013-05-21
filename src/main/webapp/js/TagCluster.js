@@ -23,10 +23,20 @@
 	});
 	
 	function drawNode(tag){
+		var container = new createjs.Container(); 
 		var node = new createjs.Shape();
 		var _w = tag.num/2;
 		_w=(_w/10>50)?50:_w/10;
-		node.graphics.beginFill("#aaa").drawCircle(1000*Math.random(),700*Math.random(),_w);
-		return node;
+		node.graphics.beginFill("rgb(197, 235, 255)").drawCircle(0,0,_w);
+		var randomX = 800*Math.random(),randomY=600*Math.random();
+		node.x = randomX
+		node.y = randomY;
+		var name = new createjs.Text(tag.name, "20px Arial", "#ff7700");
+		name.x= randomX+(2*_w-(tag.name.replace(/(^\s*)|(\s*$)/g, "").length*20*3/5))/2-_w;
+		alert((2*_w-(tag.name.replace(/(^\s*)|(\s*$)/g, "").length*20*3/5))/2);
+		name.y= randomY-10;
+		container.addChild(node,name);
+		return container;
 	}
+	
 })();
