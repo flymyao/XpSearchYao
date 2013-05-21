@@ -101,11 +101,31 @@
             		}else if(menu == "ContactCluster"){
             		  	brite.display("EaselJSForceClusterSlider");
             		  	$e.find(".ControlBar").show();
+            		  	$e.find(".addTag").hide();
             		  	$(".MainScreen-main").css("top","113px");
             		}else if(menu == "TagCluster"){
             		  	brite.display("TagCluster");
+            		  	$e.find(".addTag").show();
             		  	$e.find(".ControlBar").show();
             			$(".MainScreen-main").css("top","113px");
+            		}
+            	},
+            	"btap;.addTag .btn":function(event){
+            		var view = this;
+            		var tag = $(".addTag :text",view.$el).val();
+            		if(tag){
+            			$.ajax({
+            				url:'/addTag',
+            				data:{
+            					name:tag
+            				},
+            				type:'Post',
+            				dataType:'json'
+            			}).done(function(data){
+            				alert(tag+" adding success.");
+            			});
+            		}else{
+            			alert("please type the tag name.");
             		}
             	}
             }
