@@ -9,22 +9,45 @@
 			var view = this;
 			var nodeContainer = new Array();
 			view.nodeContainer = nodeContainer;
+			var container = new createjs.Container();
+			container.name="rootConatiner";
+			view.containerName = "rootConatiner";
+			view.stage = stage;
 			$.ajax({
 				url:"/getTagWithPost",
 				dataType:'json'				
 			}).done(function(data){
 				var tags = data.result;
-				console.log(tags);
 				$.each(tags,function(index,tag){
 					var node = drawNode.call(view,tag);
-					stage.addChild(node);
+					container.addChild(node);
 					view.nodeContainer.push(node);
-					stage.update();
 				});
+				stage.addChild(container);
+				stage.update();
 			});
 		},
-		events:{}
+		events:{},
+		docEvents:{
+			"DO_ZOOM_CHANGE": function(event,extra){
+				var view = this;
+				view.scaleVal = extra.scaleVal;
+                zoomChange.call(view, extra.scaleVal);
+			}
+		}
 	});
+	
+	function zoomChange(val){
+		var view = this;
+		var stage = view.stage;
+		var containerLayout = stage.getChildByName(view.containerName);
+			var scaleVal = val || view.scaleVal;
+        containerLayout.scaleX = scaleVal; 
+		containerLayout.scaleY = scaleVal; 
+		containerLayout.x = (1-scaleVal); 
+		containerLayout.y = (1-scaleVal); 
+		stage.update();
+	}
 	
 	function drawNode(tag){
 		var view = this;
