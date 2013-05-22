@@ -26,21 +26,16 @@
               		dataType:'json',
               		type:'Get',
               		success:function(data){
-              			data.children = data.friends;
               			view.showView(data);
               		}
-              	})
-                app.ContactDao.get().done(function(chartData){
-                	//view.showView(chartData);
-                	//console.log(chartData);
-				});
+              	});
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
 					var view = this;
 					view.level = extra.level;
 	                //app.ContactDao.getByName(view.rootName).done(function(chartData){
-					app.ContactDao.getById(view.uid).done(function(chartData){
+					app.ContactDao.getById({id:view.uid,level:extra.level}).done(function(chartData){
 		                view.showView(chartData);
 					});
 				},
@@ -289,7 +284,7 @@
       			statLayout.addChild(node);
       			
       			//app.ContactDao.getByName(d.target.name).done(function(userData){
-      			app.ContactDao.getById(d.target.uid).done(function(userData){	
+      			app.ContactDao.getById({id:d.target.uid,level:view.level}).done(function(userData){	
       				console.log(userData);
 					//add new container
 					var newContainer = createContainer.call(view, userData, {x:view.canvasW/2, y: view.canvasH/2}, view.level, (Math.PI+d.target.angleVal),true);
