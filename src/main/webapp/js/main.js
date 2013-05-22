@@ -29,6 +29,7 @@ var app = app||{};
 	app.useRAF = true;
 	app.animation = "tween";
 	app.ContactDao = brite.registerDao(new brite.dao.ContactDaoHandler("Contact"));
+	app.TagDao = brite.registerDao(new brite.dao.TagDaoHandler("Tag"));
 	app.transformDataFirst = function(dataSet,name){ 
 		var children = [];
 		var index = 0;
