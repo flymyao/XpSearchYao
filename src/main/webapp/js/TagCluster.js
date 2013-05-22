@@ -70,7 +70,7 @@
                 view.newContainerName = "newContainer";
                 view.cName = "centerCircle";
                 view.rootName = data.name;
-                view.uid = data.id;
+                view.uid = data.tagid;
 				createjs.Ticker.useRAF = app.useRAF;
 				createjs.Ticker.setFPS(60);
 				
@@ -129,7 +129,7 @@
 			        node.relatedLine = line;
 			        node.angleVal = fpos[i].angleVal;
 			        node.weight = cData.weight;
-			        node.num = cData.num;
+			        node.data = cData;
 			        
 			        //add the mouseover event for node
 			        node.addEventListener("mouseover", function(d){mouseoverEvent.call(view,d)});
@@ -161,8 +161,9 @@
 				});
 				
 				//draw the origin point
-				var circle = createCenterCircle.call(view,rx, ry, view.cName,level);
+				var circle = createCenterCircle.call(view,rx, ry, view.cName,level,data.num);
 				circle.children = childrenData.length;
+				circle.num = data.num;
 			    containerRoot.addChild(circle);
 					
 				if((view.level-level) == 0){
@@ -227,13 +228,16 @@
 		      		circle.x = cx;
 			        circle.y = cy;
 			        circle.name = cName;
-			        circle.uid = data.id;
+			        circle.uid = data.tagid;
 		      	return circle;
 		    }
 		    
-		    function createCenterCircle(cx,cy,cName,level){
+		    function createCenterCircle(cx,cy,cName,level,size){
 		    	var view = this;
-		      	var r = 5;
+		    	var r = size/2;
+        		r=size/10000*50;//(_w/10>50)?50:_w/10;
+        		r=r>20?20:r;
+        		r=r<5?5:r;
 		      	var color = _centerColors[view.level - level];
 		      	var circle = new createjs.Shape();
 		      		circle.graphics.beginStroke("#a4998e").drawCircle(0, 0, r+0.5);
@@ -282,16 +286,15 @@
 			    statLayout.removeChild(oldCenterCircle);
 			        
 			    var newCircle = new createjs.Shape();
-			    var newCircle = createCenterCircle.call(view, d.target.x, d.target.y, view.cName, view.level);
+			    var newCircle = createCenterCircle.call(view, d.target.x, d.target.y, view.cName, view.level,d.target.data.num);
       			statLayout.addChild(newCircle);
       				
       			statLayout.removeChild(d.target);
-      			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.uid);
+      			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.data);
       			statLayout.addChild(node);
       			
       			//app.ContactDao.getByName(d.target.name).done(function(userData){
-      			app.ContactDao.getById(d.target.uid).done(function(userData){	
-      				console.log(userData);
+      			app.TagDao.getById(d.target.uid).done(function(userData){	
 					//add new container
 					var newContainer = createContainer.call(view, userData, {x:view.canvasW/2, y: view.canvasH/2}, view.level, (Math.PI+d.target.angleVal),true);
 					    newContainer.name = view.newContainerName;
