@@ -218,6 +218,7 @@
         		var view = this;
         		var r = data.num/2;
         		r=data.num/10000*50;//(_w/10>50)?50:_w/10;
+        		r=r>20?20:r;
         		r=r<5?5:r;
 		    	var color = _colors[view.level - level];
 		      	var circle = new createjs.Shape();

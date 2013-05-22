@@ -222,15 +222,18 @@ public class FTSWebHandlers {
 			m.put("num", resultSet.getLong(1));
 			m.put("name", resultSet.getString(2));
 			m.put("tagid", resultSet.getLong(3));
-			m.put("children", getRelationTags(resultSet.getLong(3)));
+			m.put("children", getRelationTags(resultSet.getLong(3),2L));
 			break;
 		}
 		m.put("result", list);
 		return m;
 	}
 	
-	public List getRelationTags(Long tagId) throws SQLException{
+	public List getRelationTags(Long tagId,Long level) throws SQLException{
 		Map m = new HashMap();
+		if(level==0L){
+			return null;
+		}
 		String sql = "select count(tp2.tagid) as weight,tp2.tagid,t.name as name,(select count(tp3.tagid) " +
 				"		from xpsearchyao_schema.tagpost tp3 where tp3.tagid=tp2.tagid) as num from xpsearchyao_schema.tagpost tp1 join" +
 				"	xpsearchyao_schema.tagpost tp2 on tp1.tagid<>tp2.tagid and tp1.postid=tp2.postid join xpsearchyao_schema.tag t on " +
@@ -242,9 +245,10 @@ public class FTSWebHandlers {
 		while(resultSet.next()){
 			Map temp = new HashMap();
 			temp.put("weight", resultSet.getLong(1));
-			temp.put("tagid", resultSet.getLong(4));
+			temp.put("tagid", resultSet.getLong(2));
 			temp.put("name", resultSet.getString(3));
 			temp.put("num", resultSet.getLong(4));
+			temp.put("children", getRelationTags( resultSet.getLong(2),level-1));
 			list.add(temp);
 		}
 		return list;
