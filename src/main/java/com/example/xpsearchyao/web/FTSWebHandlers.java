@@ -207,20 +207,46 @@ public class FTSWebHandlers {
 	}
 	
 	@WebGet("/getTagWithPost")
-	public Map getTagWithPost() throws SQLException{
+	public Map getTagWithPost(@WebParam("tagId") Long tagId) throws SQLException{
 		Map m = new HashMap();
-		String sql = "select count(tp.tagid) as num,t.name  as name from xpsearchyao_schema.tagpost tp join  xpsearchyao_schema.tag t on t.id = tp.tagid group by tagid,t.name";
+		String condition="";
+		if(!(tagId==null)){
+			condition = "where tp.tagid = "+tagId;
+		}
+		String sql = "select count(tp.tagid) as num,t.name as name,tp.tagid as tagid  from xpsearchyao_schema.tagpost tp join  xpsearchyao_schema.tag t on t.id = tp.tagid "+condition+" group by tagid,t.name";
 		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		ResultSet resultSet = statementForId.executeQuery();
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
 		while(resultSet.next()){
-			Map temp = new HashMap();
-			temp.put("name", resultSet.getString(2));
-			temp.put("num", resultSet.getLong(1));
-			list.add(temp);
+			m.put("num", resultSet.getLong(1));
+			m.put("name", resultSet.getString(2));
+			m.put("tagid", resultSet.getLong(3));
+			m.put("children", getRelationTags(resultSet.getLong(3)));
+			break;
 		}
 		m.put("result", list);
 		return m;
+	}
+	
+	public List getRelationTags(Long tagId) throws SQLException{
+		Map m = new HashMap();
+		String sql = "select count(tp2.tagid) as weight,tp2.tagid,t.name as name,(select count(tp3.tagid) " +
+				"		from xpsearchyao_schema.tagpost tp3 where tp3.tagid=tp2.tagid) as num from xpsearchyao_schema.tagpost tp1 join" +
+				"	xpsearchyao_schema.tagpost tp2 on tp1.tagid<>tp2.tagid and tp1.postid=tp2.postid join xpsearchyao_schema.tag t on " +
+				"tp2.tagid = t.id where tp1.tagid = "+tagId+" group by tp1.tagid,tp2.tagid,t.name";
+		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		ResultSet resultSet =statementForId.executeQuery();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		while(resultSet.next()){
+			Map temp = new HashMap();
+			temp.put("weight", resultSet.getLong(1));
+			temp.put("tagid", resultSet.getLong(4));
+			temp.put("name", resultSet.getString(3));
+			temp.put("num", resultSet.getLong(4));
+			list.add(temp);
+		}
+		return list;
 	}
 }
