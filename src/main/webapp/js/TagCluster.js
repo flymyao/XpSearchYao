@@ -31,10 +31,6 @@
               			view.showView(data);
               		}
               	})
-                app.ContactDao.get().done(function(chartData){
-                	//view.showView(chartData);
-                	//console.log(chartData);
-				});
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
@@ -121,7 +117,7 @@
         			var cx = fpos[i].x;
 			        var cy = fpos[i].y;
 			        var cData = childrenData[i];
-			        var line = createLine.call(view,rx,ry,cx,cy,level);
+			        var line = createLine.call(view,rx,ry,cx,cy,level,cData.weight);
 			        var node = createNodeCircle.call(view,cx,cy,cData.name,level,cData);
 			        containerRoot.addChild(line);
 			        containerRoot.addChild(node);
@@ -248,8 +244,9 @@
 		      	return circle;
 		    }
 		    
-		    function createLine(x0, y0, x1, y1, level){
+		    function createLine(x0, y0, x1, y1, level,num){
 		    	var view = this;
+		    	var lineContainer = new createjs.Container();
 		    	var color = _colors[view.level - level];
 		      	var line = new createjs.Shape();
 		      		line.graphics.beginStroke(color).moveTo(x0,y0).lineTo(x1,y1);
@@ -258,8 +255,15 @@
 			        line.y0 = y0;
 			        line.x1 = x1;
 			        line.y1 = y1;
-		      	return line;
+			   
+			        var text = new createjs.Text(num, "10px Arial", "#767676");
+		      		text.x = x0/2+x1/2;
+		      		text.y = y0/2+y1/2;
+			        
+		      		lineContainer.addChild(line,text);
+		      	return lineContainer;
 		    }
+		    
 		    
 		    function createText(x0, y0, name){
 		      	var text = new createjs.Text(name, "10px Arial, #000");
@@ -442,9 +446,9 @@
 			function reDrawLine(line,offsetX,offsetY) {
 		        var view = this;
 		        var lineClone = {x0:line.x0+0, y0:line.y0+0, x1:line.x1+0, y1:line.y1+0};
-		        line.graphics.clear().beginStroke(line.color).moveTo(lineClone.x0, lineClone.y0).lineTo(offsetX, offsetY);
-		        line.x1 = offsetX;
-		        line.y1 = offsetY;
+		        line.children[0].graphics.clear().beginStroke(line.color).moveTo(lineClone.x0, lineClone.y0).lineTo(offsetX, offsetY);
+		        line.children[0].x1 = offsetX;
+		        line.children[0].y1 = offsetY;
         	}
         	
 			function weightSort(a,b){
