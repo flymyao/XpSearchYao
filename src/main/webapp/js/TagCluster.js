@@ -122,7 +122,7 @@
 			        containerRoot.addChild(line);
 			        containerRoot.addChild(node);
 			        node.originPotint = {cx:cx,cy:cy};
-			        node.relatedLine = line;
+			        node.relatedLine = line.children[0];
 			        node.angleVal = fpos[i].angleVal;
 			        node.weight = cData.weight;
 			        node.data = cData;
@@ -244,7 +244,7 @@
 		      	return circle;
 		    }
 		    
-		    function createLine(x0, y0, x1, y1, level,num){
+		    function createLine(x0, y0, x1, y1, level,weight){
 		    	var view = this;
 		    	var lineContainer = new createjs.Container();
 		    	var color = _colors[view.level - level];
@@ -256,7 +256,7 @@
 			        line.x1 = x1;
 			        line.y1 = y1;
 			   
-			        var text = new createjs.Text(num, "10px Arial", "#767676");
+			        var text = new createjs.Text(weight, "10px Arial", "#767676");
 		      		text.x = x0/2+x1/2;
 		      		text.y = y0/2+y1/2;
 			        
@@ -446,9 +446,9 @@
 			function reDrawLine(line,offsetX,offsetY) {
 		        var view = this;
 		        var lineClone = {x0:line.x0+0, y0:line.y0+0, x1:line.x1+0, y1:line.y1+0};
-		        line.children[0].graphics.clear().beginStroke(line.color).moveTo(lineClone.x0, lineClone.y0).lineTo(offsetX, offsetY);
-		        line.children[0].x1 = offsetX;
-		        line.children[0].y1 = offsetY;
+		        line.graphics.clear().beginStroke(line.color).moveTo(lineClone.x0, lineClone.y0).lineTo(offsetX, offsetY);
+		        line.x1 = offsetX;
+		        line.y1 = offsetY;
         	}
         	
 			function weightSort(a,b){
