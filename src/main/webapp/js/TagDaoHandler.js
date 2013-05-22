@@ -1,24 +1,24 @@
 
-// --------- Contact Dao --------- //
+// --------- Tag Dao --------- //
 (function($) {
 
-	function ContactDaoHandler(entityType) {
+	function TagDaoHandler(entityType) {
         this._entityType = entityType;
 	}
 
 	// ------ DAO Interface Implementation ------ //
-	ContactDaoHandler.prototype.getIdName = function() {
+	TagDaoHandler.prototype.getIdName = function() {
 		return "id";
 	};
 
     // --------- DAO Info Methods --------- //
-    ContactDaoHandler.prototype.entityType = function () {
+    TagDaoHandler.prototype.entityType = function () {
         return this._entityType;
     };
     // --------- DAO Info Methods --------- //
 
 
-	ContactDaoHandler.prototype.get = function(id) {
+	TagDaoHandler.prototype.get = function(id) {
 		var objectType = this._entityType;
 		var resultSet = {};
 		var dataSet = app.dataSet;
@@ -42,7 +42,7 @@
 		return resultSet;
 	}
 	
-	ContactDaoHandler.prototype.getByName = function(name) {
+	TagDaoHandler.prototype.getByName = function(name) {
 		var objectType = this._entityType;
 		var resultSet = {};
 		var dataSet = app.dataSet;
@@ -66,31 +66,31 @@
 		return resultSet;
 	}
 	
-	ContactDaoHandler.prototype.getById = function(ops) {
+	TagDaoHandler.prototype.getById = function(id) {
 		var objectType = this._entityType;
 		var resultSet = {};
 		var dataSet = app.dataSet;
 
 		return $.ajax({
-			url:'/getUsers',
+			url:'/getTagWithPost',
 			data:{
-				userId:ops.id,
-				level:ops.level
+				tagId:id
 			},
 			dataType:'json'
 			
 		}).done(function(data){
+			console.log(data);
 			return data;
 		});
 	}
 	
-	ContactDaoHandler.prototype.update = function(data) {
+	TagDaoHandler.prototype.update = function(data) {
 		app.dataSet = data;
 		return data;
 	}
 
-	brite.dao.ContactDaoHandler = ContactDaoHandler;
+	brite.dao.TagDaoHandler = TagDaoHandler;
 	// ------ /DAO Interface Implementation ------ //
 
 })(jQuery);
-// --------- /Contact Dao --------- //
+// --------- /Tag Dao --------- //

@@ -103,57 +103,45 @@ public class FTSWebHandlers {
 	}
 	
 	@WebGet("/getUsers")
-	public Map getUsers(@WebParam("userId")Long userId) throws SQLException{
+	public Map getUsers(@WebParam("userId")Long userId,@WebParam("level")Integer level) throws SQLException{
 		if(userId==null){
 			userId = 10L;
 		}
-		List<Map> results = new ArrayList<Map>();
-		String sql = "select distinct c.userid as userid,u.displayname as name " +
-				"from xpsearchyao_schema.post p join xpsearchyao_schema.comment c " +
-				"on p.owneruserid = "+userId+" and c.postid = p.id join xpsearchyao_schema.user u on u.id = c.userid limit 10 offset 0";
-		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
-		ResultSet resultSet = statement.executeQuery();
-		while(resultSet.next()){
-			Map map = new HashMap();
-			map.put("id", resultSet.getString("userid"));
-			map.put("name", resultSet.getString("name"));
-			map.put("parentId",userId);
-			map.put("weight", 1);
-			map.put("children",getUsersSet(Long.parseLong(resultSet.getString("userid"))));
-			results.add(map);
+		if(level==null){
+			level = 2;
 		}
-		
-		resultSet.close();
-		statement.close();
-		
 		Map m = new HashMap();
 		Map user = getUser(userId);
 		m.put("id", user.get("id"));
 		m.put("name", user.get("name"));
-		m.put("friends", results);
+		m.put("children", getUsersSet(userId,level));
 		return m;
 	}
 	
-	private List getUsersSet(Long userId) throws SQLException{
-		List<Map> results = new ArrayList<Map>();
-		String sql = "select distinct c.userid as userid,u.displayname as name " +
-				"from xpsearchyao_schema.post p join xpsearchyao_schema.comment c " +
-				"on p.owneruserid = "+userId+" and c.postid = p.id join xpsearchyao_schema.user u on u.id = c.userid limit 10 offset 0";
-		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
-		ResultSet resultSet = statement.executeQuery();
-		while(resultSet.next()){
-			Map map = new HashMap();
-			map.put("id", resultSet.getString("userid"));
-			map.put("name", resultSet.getString("name"));
-			map.put("parentId",userId);
-			map.put("weight", 1);
-			map.put("friends",new HashMap());
-			results.add(map);
+	private List getUsersSet(Long userId,Integer level) throws SQLException{
+		while(level>0){
+			level--;
+			List<Map> results = new ArrayList<Map>();
+			String sql = "select distinct c.userid as userid,u.displayname as name " +
+					"from xpsearchyao_schema.post p join xpsearchyao_schema.comment c " +
+					"on p.owneruserid = "+userId+" and c.postid = p.id join xpsearchyao_schema.user u on u.id = c.userid limit 10 offset 0";
+			PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next()){
+				Map map = new HashMap();
+				map.put("id", resultSet.getString("userid"));
+				map.put("name", resultSet.getString("name"));
+				map.put("parentId",userId);
+				map.put("weight", 1);
+				map.put("children",getUsersSet(resultSet.getLong("userid"),level));
+				results.add(map);
+			}
+			
+			resultSet.close();
+			statement.close();
+			return results;
 		}
-		
-		resultSet.close();
-		statement.close();
-		return results;
+		return null;
 	}
 	private Map getUser(Long userId) throws SQLException{
 		String sql = "select id,displayname from xpsearchyao_schema.user where id = "+userId;
@@ -207,20 +195,50 @@ public class FTSWebHandlers {
 	}
 	
 	@WebGet("/getTagWithPost")
-	public Map getTagWithPost() throws SQLException{
+	public Map getTagWithPost(@WebParam("tagId") Long tagId) throws SQLException{
 		Map m = new HashMap();
-		String sql = "select count(tp.tagid) as num,t.name  as name from xpsearchyao_schema.tagpost tp join  xpsearchyao_schema.tag t on t.id = tp.tagid group by tagid,t.name";
+		String condition="";
+		if(!(tagId==null)){
+			condition = "where tp.tagid = "+tagId;
+		}
+		String sql = "select count(tp.tagid) as num,t.name as name,tp.tagid as tagid  from xpsearchyao_schema.tagpost tp join  xpsearchyao_schema.tag t on t.id = tp.tagid "+condition+" group by tagid,t.name";
 		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		ResultSet resultSet = statementForId.executeQuery();
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
 		while(resultSet.next()){
-			Map temp = new HashMap();
-			temp.put("name", resultSet.getString(2));
-			temp.put("num", resultSet.getLong(1));
-			list.add(temp);
+			m.put("num", resultSet.getLong(1));
+			m.put("name", resultSet.getString(2));
+			m.put("tagid", resultSet.getLong(3));
+			m.put("children", getRelationTags(resultSet.getLong(3),2L));
+			break;
 		}
 		m.put("result", list);
 		return m;
+	}
+	
+	public List getRelationTags(Long tagId,Long level) throws SQLException{
+		Map m = new HashMap();
+		if(level==0L){
+			return null;
+		}
+		String sql = "select count(tp2.tagid) as weight,tp2.tagid,t.name as name,(select count(tp3.tagid) " +
+				"		from xpsearchyao_schema.tagpost tp3 where tp3.tagid=tp2.tagid) as num from xpsearchyao_schema.tagpost tp1 join" +
+				"	xpsearchyao_schema.tagpost tp2 on tp1.tagid<>tp2.tagid and tp1.postid=tp2.postid join xpsearchyao_schema.tag t on " +
+				"tp2.tagid = t.id where tp1.tagid = "+tagId+" group by tp1.tagid,tp2.tagid,t.name";
+		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sql.toString());
+		ResultSet resultSet =statementForId.executeQuery();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		while(resultSet.next()){
+			Map temp = new HashMap();
+			temp.put("weight", resultSet.getLong(1));
+			temp.put("tagid", resultSet.getLong(2));
+			temp.put("name", resultSet.getString(3));
+			temp.put("num", resultSet.getLong(4));
+			temp.put("children", getRelationTags( resultSet.getLong(2),level-1));
+			list.add(temp);
+		}
+		return list;
 	}
 }
