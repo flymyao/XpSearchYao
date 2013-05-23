@@ -1,4 +1,3 @@
-
 CREATE TABLE post (
     id bigint NOT NULL,
     acceptedanswerid bigint,
@@ -19,7 +18,6 @@ CREATE TABLE post (
     viewcount bigint
 );
 
-
 CREATE TABLE comment (
     id bigint NOT NULL,
     postid bigint,
@@ -27,7 +25,6 @@ CREATE TABLE comment (
     creationdate timestamp with time zone,
     userid bigint
 );
-
 
 CREATE TABLE xpsearchyao_schema."user"
 (
@@ -48,34 +45,25 @@ CREATE TABLE xpsearchyao_schema."user"
   upvotes bigint,
   views bigint,
   CONSTRAINT user_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE xpsearchyao_schema.userpostrel
 (
   userid bigint NOT NULL,
   postid bigint NOT NULL,
   CONSTRAINT userpostrel_pkey PRIMARY KEY (userid, postid)
-)
+);
 
 CREATE TABLE xpsearchyao_schema.tag
 (
   id bigint NOT NULL,
   name character(256),
   CONSTRAINT tag_pkey PRIMARY KEY (id)
-)
-
-CREATE SEQUENCE id_seq
-    START WITH 1 
-    INCREMENT BY 1 
-    NO MINVALUE 
-    NO MAXVALUE 
-    CACHE 1; 
-    
-alter table xpsearchyao_schema.tag alter column id set default nextval('id_seq');
+);
 
 CREATE TABLE xpsearchyao_schema.tagpost
 (
   tagid bigint NOT NULL,
   postid bigint NOT NULL,
   CONSTRAINT tagpost_pkey PRIMARY KEY (tagid, postid)
-)
+);

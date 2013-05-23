@@ -163,31 +163,7 @@ public class FTSWebHandlers {
 	@WebPost("/addTag")
 	public Map addTag(@WebParam("name") String name) throws SQLException{
 		Map m = new HashMap();
-		String sqlForId = "select nextval('id_seq')";
-		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sqlForId.toString());
-		ResultSet resultSet = statementForId.executeQuery();
-		Long id = 0L;
-		while(resultSet.next()){
-			id = resultSet.getLong(1);
-			break;
-		}
-		
-		String fts = "select id from xpsearchyao_schema.post where tsv @@ plainto_tsquery('"+name+"');";
-		PreparedStatement statementfts = dbConnectionManager.getConnection().prepareStatement(fts.toString());
-		ResultSet resultSetForFts = statementfts.executeQuery();
-		StringBuffer insertSql = new StringBuffer("insert into xpsearchyao_schema.tagpost(tagid,postid) values");
-		while(resultSetForFts.next()){
-			insertSql.append("(").append(id).append(",").append(resultSetForFts.getLong(1)).append("),");
-		}
-		
-		PreparedStatement ftsStatement = dbConnectionManager.getConnection().prepareStatement(insertSql.substring(0, insertSql.length()-1));
-		System.out.println(insertSql);
-		ftsStatement.execute();
-
-		
-		
-		
-		String sql = "insert into  xpsearchyao_schema.tag(id,name) values("+id+",'"+name+"')";
+		String sql = "insert into  xpsearchyao_schema.tag(name) values('"+name+"')";
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		int result = statement.executeUpdate();
 		m.put("result", result);
