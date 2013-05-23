@@ -163,31 +163,7 @@ public class FTSWebHandlers {
 	@WebPost("/addTag")
 	public Map addTag(@WebParam("name") String name) throws SQLException{
 		Map m = new HashMap();
-		String sqlForId = "select nextval('id_seq')";
-		PreparedStatement statementForId = dbConnectionManager.getConnection().prepareStatement(sqlForId.toString());
-		ResultSet resultSet = statementForId.executeQuery();
-		Long id = 0L;
-		while(resultSet.next()){
-			id = resultSet.getLong(1);
-			break;
-		}
-		
-		String fts = "select id from xpsearchyao_schema.post where tsv @@ plainto_tsquery('"+name+"');";
-		PreparedStatement statementfts = dbConnectionManager.getConnection().prepareStatement(fts.toString());
-		ResultSet resultSetForFts = statementfts.executeQuery();
-		StringBuffer insertSql = new StringBuffer("insert into xpsearchyao_schema.tagpost(tagid,postid) values");
-		while(resultSetForFts.next()){
-			insertSql.append("(").append(id).append(",").append(resultSetForFts.getLong(1)).append("),");
-		}
-		
-		PreparedStatement ftsStatement = dbConnectionManager.getConnection().prepareStatement(insertSql.substring(0, insertSql.length()-1));
-		System.out.println(insertSql);
-		ftsStatement.execute();
-
-		
-		
-		
-		String sql = "insert into  xpsearchyao_schema.tag(id,name) values("+id+",'"+name+"')";
+		String sql = "insert into  xpsearchyao_schema.tag(name) values('"+name+"')";
 		PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql.toString());
 		int result = statement.executeUpdate();
 		m.put("result", result);
@@ -195,7 +171,10 @@ public class FTSWebHandlers {
 	}
 	
 	@WebGet("/getTagWithPost")
-	public Map getTagWithPost(@WebParam("tagId") Long tagId) throws SQLException{
+	public Map getTagWithPost(@WebParam("tagId") Long tagId,@WebParam("level")Long level) throws SQLException{
+		if(level==null){
+			level = 2L;
+		}
 		Map m = new HashMap();
 		String condition="";
 		if(!(tagId==null)){
@@ -210,7 +189,7 @@ public class FTSWebHandlers {
 			m.put("num", resultSet.getLong(1));
 			m.put("name", resultSet.getString(2));
 			m.put("tagid", resultSet.getLong(3));
-			m.put("children", getRelationTags(resultSet.getLong(3),2L));
+			m.put("children", getRelationTags(resultSet.getLong(3),level));
 			break;
 		}
 		m.put("result", list);
@@ -218,8 +197,7 @@ public class FTSWebHandlers {
 	}
 	
 	public List getRelationTags(Long tagId,Long level) throws SQLException{
-		Map m = new HashMap();
-		if(level==0L){
+		if(level==1L){
 			return null;
 		}
 		String sql = "select count(tp2.tagid) as weight,tp2.tagid,t.name as name,(select count(tp3.tagid) " +

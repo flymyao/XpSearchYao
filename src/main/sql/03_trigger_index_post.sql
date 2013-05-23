@@ -20,3 +20,18 @@ UPDATE  xpsearchyao_schema.post  SET tsv =
      setweight(to_tsvector('english', coalesce(title,'')),'A')||
      setweight(to_tsvector('english', coalesce(body,'')),'C');
  
+     
+     
+/***************begin trigger for tag**********************/
+CREATE OR REPLACE FUNCTION addtagpost() RETURNS trigger AS $addtagpost$
+    BEGIN
+       insert into xpsearchyao_schema.tagpost(tagid, postid)
+    select new.id, id from xpsearchyao_schema.post where tsv @@ to_tsquery(new.name);
+    return new;
+    END;
+$addtagpost$ LANGUAGE plpgsql;
+
+CREATE TRIGGER addtagpost after INSERT OR UPDATE
+  ON  xpsearchyao_schema.tag  FOR EACH ROW EXECUTE PROCEDURE
+  addtagpost();
+/***************end trigger for tag**********************/
