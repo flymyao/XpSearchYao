@@ -21,23 +21,15 @@
                	var scaleVal = $e.closest(".MainScreen").find(".ControlBar #sl2").val();
               	view.scaleVal = scaleVal/100;
               	
-              	$.ajax({
-              		url:'/getTagWithPost',
-              		dataType:'json',
-              		type:'Get',
-              		success:function(data){
-              			//data.children = data.friends;
-              			data.id = data.tagid;
-              			view.showView(data);
-              		}
-              	})
+              	app.TagDao.getById({id:view.uid,level:view.level}).done(function(data){
+              		 view.showView(data);
+              	});
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
 					var view = this;
 					view.level = extra.level;
-	                //app.ContactDao.getByName(view.rootName).done(function(chartData){
-					app.ContactDao.getById(view.uid).done(function(chartData){
+					app.TagDao.getById({id:view.uid,level:view.level}).done(function(chartData){
 		                view.showView(chartData);
 					});
 				},
@@ -214,7 +206,7 @@
         	function createNodeCircle(cx,cy,cName,level,data){
         		var view = this;
         		var r = data.num/2;
-        		r=data.num/10000*50;//(_w/10>50)?50:_w/10;
+        		r=data.num/10000*50; 
         		r=r>20?20:r;
         		r=r<5?5:r;
 		    	var color = _colors[view.level - level];
@@ -231,7 +223,7 @@
 		    function createCenterCircle(cx,cy,cName,level,size){
 		    	var view = this;
 		    	var r = size/2;
-        		r=size/10000*50;//(_w/10>50)?50:_w/10;
+        		r=size/10000*50; 
         		r=r>20?20:r;
         		r=r<5?5:r;
 		      	var color = _centerColors[view.level - level];
@@ -297,8 +289,7 @@
       			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.data);
       			statLayout.addChild(node);
       			
-      			//app.ContactDao.getByName(d.target.name).done(function(userData){
-      			app.TagDao.getById(d.target.uid).done(function(userData){	
+      			app.TagDao.getById({id:d.target.uid,level:view.level}).done(function(userData){	
 					//add new container
 					var newContainer = createContainer.call(view, userData, {x:view.canvasW/2, y: view.canvasH/2}, view.level, (Math.PI+d.target.angleVal),true);
 					    newContainer.name = view.newContainerName;
@@ -309,7 +300,7 @@
 					stage.update();
 					    
 					createjs.CSSPlugin.install();
-					var $contactInfo = view.$el.find(".contact-info");
+					var $contactInfo = view.$el.find(".tag-info");
 				   	if($contactInfo.find("span").size() > 0){
 				   		var leftVal = $contactInfo.position().left - (d.target.x - rx);
 				   		var topVal = $contactInfo.position().top - (d.target.y - ry);
@@ -341,7 +332,7 @@
 			function clickOriginPointEvent(d){
 				var view = this;
 			    var children = d.target.children;
-			    var $contactInfo = view.$el.find(".contact-info");
+			    var $contactInfo = view.$el.find(".tag-info");
 			   		
 			    if($contactInfo.find("span").size() == 0){
 			    	$contactInfo.html('<span class="label label-info">'+view.rootName+": "+children+' friends</span>')
@@ -358,7 +349,7 @@
 			    var stage = view.stage;
 			    var target = evt.target;
 			    
-			    var $contactInfo = view.$el.find(".contact-info");
+			    var $contactInfo = view.$el.find(".tag-info");
 			    $contactInfo.html('<span class="label label-info">Name: '+target.name+", Weight: "+target.weight+'</span>')
 				$contactInfo.css("top",target.y-10);
 				$contactInfo.css("left",target.x+20);
@@ -367,7 +358,7 @@
 			
 			function mouseoutEvent(evt){
 				var view = this;
-			    $contactInfo = view.$el.find(".contact-info").empty();
+			    $contactInfo = view.$el.find(".tag-info").empty();
 			}
 			
 			function mousedownEvent(evt){

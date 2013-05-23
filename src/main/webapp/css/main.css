@@ -170,3 +170,11 @@ b{
 	right:0;
 	top:-5px;
 }
+
+.contact-info{
+	position: absolute;
+}
+
+.tag-info{
+	position: absolute;
+}

@@ -21,20 +21,14 @@
                	var scaleVal = $e.closest(".MainScreen").find(".ControlBar #sl2").val();
               	view.scaleVal = scaleVal/100;
               	
-              	$.ajax({
-              		url:'/getUsers',
-              		dataType:'json',
-              		type:'Get',
-              		success:function(data){
-              			view.showView(data);
-              		}
-              	});
+              	app.ContactDao.getById({id:view.uid,level:view.level}).done(function(data){
+	                view.showView(data);
+				});
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
 					var view = this;
 					view.level = extra.level;
-	                //app.ContactDao.getByName(view.rootName).done(function(chartData){
 					app.ContactDao.getById({id:view.uid,level:extra.level}).done(function(chartData){
 		                view.showView(chartData);
 					});
@@ -150,7 +144,7 @@
 			        
 			        //show the children level
 					if((level-1) > 0){
-						var newData = cData;//app.transformData(app.dataSet, cData.name, parentName);
+						var newData = cData; 
 						var newContainer = createContainer.call(view, newData, {x:cx, y:cy}, level-1, (Math.PI + angle* i)+exAngle);
 						node.relatedContainer = newContainer;
 						containerRoot.addChild(newContainer);
@@ -283,7 +277,6 @@
       			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.uid);
       			statLayout.addChild(node);
       			
-      			//app.ContactDao.getByName(d.target.name).done(function(userData){
       			app.ContactDao.getById({id:d.target.uid,level:view.level}).done(function(userData){	
       				console.log(userData);
 					//add new container
