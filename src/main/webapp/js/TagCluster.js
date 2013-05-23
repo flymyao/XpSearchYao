@@ -300,7 +300,7 @@
 					stage.update();
 					    
 					createjs.CSSPlugin.install();
-					var $contactInfo = view.$el.find(".contact-info");
+					var $contactInfo = view.$el.find(".tag-info");
 				   	if($contactInfo.find("span").size() > 0){
 				   		var leftVal = $contactInfo.position().left - (d.target.x - rx);
 				   		var topVal = $contactInfo.position().top - (d.target.y - ry);
@@ -332,7 +332,7 @@
 			function clickOriginPointEvent(d){
 				var view = this;
 			    var children = d.target.children;
-			    var $contactInfo = view.$el.find(".contact-info");
+			    var $contactInfo = view.$el.find(".tag-info");
 			   		
 			    if($contactInfo.find("span").size() == 0){
 			    	$contactInfo.html('<span class="label label-info">'+view.rootName+": "+children+' friends</span>')
@@ -349,7 +349,7 @@
 			    var stage = view.stage;
 			    var target = evt.target;
 			    
-			    var $contactInfo = view.$el.find(".contact-info");
+			    var $contactInfo = view.$el.find(".tag-info");
 			    $contactInfo.html('<span class="label label-info">Name: '+target.name+", Weight: "+target.weight+'</span>')
 				$contactInfo.css("top",target.y-10);
 				$contactInfo.css("left",target.x+20);
@@ -358,7 +358,7 @@
 			
 			function mouseoutEvent(evt){
 				var view = this;
-			    $contactInfo = view.$el.find(".contact-info").empty();
+			    $contactInfo = view.$el.find(".tag-info").empty();
 			}
 			
 			function mousedownEvent(evt){
