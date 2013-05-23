@@ -171,7 +171,10 @@ public class FTSWebHandlers {
 	}
 	
 	@WebGet("/getTagWithPost")
-	public Map getTagWithPost(@WebParam("tagId") Long tagId) throws SQLException{
+	public Map getTagWithPost(@WebParam("tagId") Long tagId,@WebParam("level")Long level) throws SQLException{
+		if(level==null){
+			level = 2L;
+		}
 		Map m = new HashMap();
 		String condition="";
 		if(!(tagId==null)){
@@ -186,7 +189,7 @@ public class FTSWebHandlers {
 			m.put("num", resultSet.getLong(1));
 			m.put("name", resultSet.getString(2));
 			m.put("tagid", resultSet.getLong(3));
-			m.put("children", getRelationTags(resultSet.getLong(3),2L));
+			m.put("children", getRelationTags(resultSet.getLong(3),level));
 			break;
 		}
 		m.put("result", list);
@@ -194,8 +197,7 @@ public class FTSWebHandlers {
 	}
 	
 	public List getRelationTags(Long tagId,Long level) throws SQLException{
-		Map m = new HashMap();
-		if(level==0L){
+		if(level==1L){
 			return null;
 		}
 		String sql = "select count(tp2.tagid) as weight,tp2.tagid,t.name as name,(select count(tp3.tagid) " +
