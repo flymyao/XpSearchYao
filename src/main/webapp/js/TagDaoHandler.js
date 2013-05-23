@@ -28,7 +28,6 @@
 			dataType:'json'
 			
 		}).done(function(data){
-			console.log(data);
 			return data;
 		});
 	}

@@ -21,15 +21,9 @@
                	var scaleVal = $e.closest(".MainScreen").find(".ControlBar #sl2").val();
               	view.scaleVal = scaleVal/100;
               	
-              	$.ajax({
-              		url:'/getTagWithPost',
-              		dataType:'json',
-              		type:'Get',
-              		success:function(data){
-              			data.id = data.tagid;
-              			view.showView(data);
-              		}
-              	})
+              	app.TagDao.getById({id:view.uid,level:view.level}).done(function(data){
+              		 view.showView(data);
+              	});
 			},
 			docEvents: {
 				"DO_LEVEL_CHANGE": function(event,extra){
@@ -212,7 +206,7 @@
         	function createNodeCircle(cx,cy,cName,level,data){
         		var view = this;
         		var r = data.num/2;
-        		r=data.num/10000*50;//(_w/10>50)?50:_w/10;
+        		r=data.num/10000*50; 
         		r=r>20?20:r;
         		r=r<5?5:r;
 		    	var color = _colors[view.level - level];
@@ -229,7 +223,7 @@
 		    function createCenterCircle(cx,cy,cName,level,size){
 		    	var view = this;
 		    	var r = size/2;
-        		r=size/10000*50;//(_w/10>50)?50:_w/10;
+        		r=size/10000*50; 
         		r=r>20?20:r;
         		r=r<5?5:r;
 		      	var color = _centerColors[view.level - level];
