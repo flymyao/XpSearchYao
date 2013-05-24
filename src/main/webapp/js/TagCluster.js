@@ -369,6 +369,7 @@
 			    var ox = target.x;
 			    var oy = target.y;
 			    var relatedContainer = target.relatedContainer;
+			    var rPoint = {x:relatedContainer.x,y:relatedContainer.y};
 			    var relatedText = target.relatedText;
 			    var relatedLine = target.relatedLine;
 			    var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
@@ -383,12 +384,12 @@
 			        target.x = ox+(ev.stageX+offset.x-ox)/view.scaleVal;
 			        target.y = oy+(ev.stageY+offset.y-oy)/view.scaleVal;
 			        if(relatedContainer){
-			        	relatedContainer.x = relatedContainer.x+ offsetX+10;
-			        	relatedContainer.y = relatedContainer.y+ offsetY+10;
+			        	relatedContainer.x = rPoint.x+ (ev.stageX+offset.x-ox)/view.scaleVal;
+			        	relatedContainer.y = rPoint.y+ (ev.stageY+offset.y-oy)/view.scaleVal;
 			        }
 			        if(relatedText){
 			        	relatedText.x = target.x-10;//relatedText.x+ offsetX/view.scaleVal;
-			        	relatedText.y = target.y+10;relatedText.y+ offsetY/view.scaleVal;
+			        	relatedText.y = target.y+10;//relatedText.y+ offsetY/view.scaleVal;
 			        }
 			        reDrawLine.call(view,relatedLine,target.x,target.y);
 			        stage.update();
