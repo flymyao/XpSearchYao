@@ -46,7 +46,6 @@ public class DataWebHandler {
 					.append(getString(m.get("tag"))).append(",")
 					.append(getString(m.get("title"))).append(",")
 					.append(m.get("viewcount")).append("),");
-				break;
 			}
 		}else if(table.equals(Table.Comment)){
 			sql.append("insert into xpsearchyao_schema.").append(table)

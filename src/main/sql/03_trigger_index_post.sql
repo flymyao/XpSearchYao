@@ -1,26 +1,47 @@
-  ALTER TABLE  xpsearchyao_schema.post  ADD COLUMN ttsv tsvector;
+/***************begin trigger for post**********************/
+ALTER TABLE  xpsearchyao_schema.post  ADD COLUMN ttsv tsvector;
+ALTER TABLE  xpsearchyao_schema.post  ADD COLUMN tsv tsvector;
+ALTER TABLE  xpsearchyao_schema.post  ADD COLUMN btsv tsvector;
+ 
 UPDATE  xpsearchyao_schema.post  SET ttsv =
      to_tsvector('english', coalesce(title,'') || ' ' );
+     
+UPDATE  xpsearchyao_schema.post  SET tsv =
+		 setweight(to_tsvector('english', coalesce(title,'')),'A')||
+		 setweight(to_tsvector('english', coalesce(body,'')),'C');
+     
+UPDATE  xpsearchyao_schema.post  SET btsv =
+     to_tsvector('english', coalesce(body,'') || ' ' );
+     
+     
+     
 CREATE TRIGGER tsvectorupdatettsv BEFORE INSERT OR UPDATE
   ON  xpsearchyao_schema.post  FOR EACH ROW EXECUTE PROCEDURE
   tsvector_update_trigger(ttsv, 'pg_catalog.english', title);
 
-  ALTER TABLE  xpsearchyao_schema.post  ADD COLUMN btsv tsvector;
-UPDATE  xpsearchyao_schema.post  SET btsv =
-     to_tsvector('english', coalesce(body,'') || ' ' );
 CREATE TRIGGER tsvectorupdatebtsv BEFORE INSERT OR UPDATE
   ON  xpsearchyao_schema.post  FOR EACH ROW EXECUTE PROCEDURE
   tsvector_update_trigger(btsv, 'pg_catalog.english', body);
   
-  CREATE INDEX gin_index ON xpsearchyao_schema.post 
-  USING gin(ttsv,btsv);
   
-  ALTER TABLE  xpsearchyao_schema.post  ADD COLUMN tsv tsvector;
-UPDATE  xpsearchyao_schema.post  SET tsv =
-     setweight(to_tsvector('english', coalesce(title,'')),'A')||
-     setweight(to_tsvector('english', coalesce(body,'')),'C');
+  CREATE FUNCTION post_trigger() RETURNS trigger AS $$
+begin
+  new.tsv :=
+     setweight(to_tsvector('english', coalesce(new.title,'')), 'A') ||
+     setweight(to_tsvector('english', coalesce(new.body,'')), 'C')
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER tsvectorupdatebtsv BEFORE INSERT OR UPDATE
+  ON  xpsearchyao_schema.post  FOR EACH ROW EXECUTE PROCEDURE
+	post_trigger();
+  
+CREATE INDEX gin_index ON xpsearchyao_schema.post 
+  USING gin(ttsv,btsv);
+   
  
-     
+/***************end trigger for post**********************/     
      
 /***************begin trigger for tag**********************/
 CREATE OR REPLACE FUNCTION addtagpost() RETURNS trigger AS $addtagpost$
