@@ -97,5 +97,5 @@ Handlebars.templates['tmpl-TagCluster'] = Handlebars.template(function (Handleba
   
 
 
-  return "<div>\n	<canvas id=\"TagCluster\" width=\"1280\" height=\"520\"></canvas>\n	<div class=\"tag-info\">\n		<span></span>\n	</div>\n</div>";}
+  return "<div>\n	<div class=\"TagClusterContainer\">\n		<canvas id=\"TagCluster\"></canvas>\n	</div>\n	<div class=\"tag-info\">\n		<span></span>\n	</div>\n</div>";}
 );
