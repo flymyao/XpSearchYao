@@ -13,14 +13,14 @@
                 view.scaleVal = view.scaleVal || 1;
                 $e.find(".ControlBar").hide();
                 
-                $('#sl1').slider().off('slide').on('slide', function(ev){
+                $('#sl1',$e).slider().off('slide').on('slide', function(ev){
                 	if(view.level != ev.value){
                 		view.level = ev.value;
 	                	view.$el.trigger("DO_LEVEL_CHANGE",{level:ev.value});
                 	}
 				});
 				
-				$('#sl2').slider().off('slide').on('slide', function(ev){
+				$('#sl2',$e).slider().off('slide').on('slide', function(ev){
                 	var scaleVal = ev.value/100;
                 	view.scaleVal = scaleVal;
                 	view.$el.trigger("DO_ZOOM_CHANGE",{scaleVal:scaleVal});
@@ -42,12 +42,12 @@
             		  	brite.display("EaselJSForceClusterSlider");
             		  	$e.find(".ControlBar").show();
             		  	$e.find(".addTag").hide();
-            		  	$(".MainScreen-main").css("top","113px");
+            		  	$e.bComponent("MainScreen").$element.find(".MainScreen-main").css("top","113px");
             		}else if(menu == "TagCluster"){
             		  	brite.display("TagCluster");
             		  	$e.find(".addTag").show();
             		  	$e.find(".ControlBar").show();
-            			$(".MainScreen-main").css("top","113px");
+            			$e.bComponent("MainScreen").$element.find(".MainScreen-main").css("top","113px");
             		}
             	},
             	"btap;.addTag .btn":function(event){

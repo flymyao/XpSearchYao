@@ -66,7 +66,7 @@
 				$ClusterChart.empty();
 				$ClusterChart.html('<canvas id="ClusterChart" ></canvas>');  
 				  
-				var canvas = $e.find("#ClusterChart")[0];
+				var canvas = $e.find("#ClusterChart",$e)[0];
 				canvas.width = $e.parent().width();
         		canvas.height = $e.parent().height();
         		
