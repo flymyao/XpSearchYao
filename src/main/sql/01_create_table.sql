@@ -1,4 +1,4 @@
-CREATE TABLE post (
+CREATE TABLE xpsearchyao_schema.post (
     id bigint NOT NULL,
     acceptedanswerid bigint,
     answercount bigint,
@@ -15,27 +15,24 @@ CREATE TABLE post (
     score bigint,
     tag character varying(255),
     title character varying(255),
-    viewcount bigint
+    viewcount bigint,
+     CONSTRAINT post_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE comment (
+CREATE TABLE xpsearchyao_schema.comment (
     id bigint NOT NULL,
     postid bigint,
     text text,
     creationdate timestamp with time zone,
-    userid bigint
+    userid bigint,
+    CONSTRAINT comment_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE xpsearchyao_schema."user"
 (
   id bigint NOT NULL,
-  firstname character varying(255),
-  lastname character varying(255),
-  password character varying(255),
-  photourl character varying(255),
-  username character varying(255),
-  aboutme character varying(255),
-  createdate timestamp without time zone,
+  aboutme text,
+  creationdate timestamp without time zone,
   displayname character varying(255),
   downvotes bigint,
   emailhash character varying(255),
@@ -56,7 +53,7 @@ CREATE TABLE xpsearchyao_schema.userpostrel
 
 CREATE TABLE xpsearchyao_schema.tag
 (
-  id bigint NOT NULL,
+  id serial NOT NULL,
   name character(256),
   CONSTRAINT tag_pkey PRIMARY KEY (id)
 );

@@ -62,7 +62,7 @@
 				createjs.Ticker.useRAF = app.useRAF;
 				createjs.Ticker.setFPS(60);
 				
-				var canvas = $("#TagCluster")[0];
+				var canvas = $("#TagCluster",$e)[0];
 				canvas.width = $e.parent().width();
         		canvas.height = $e.parent().height();
         		
@@ -369,6 +369,7 @@
 			    var ox = target.x;
 			    var oy = target.y;
 			    var relatedContainer = target.relatedContainer;
+			    var rPoint = {x:relatedContainer.x,y:relatedContainer.y};
 			    var relatedText = target.relatedText;
 			    var relatedLine = target.relatedLine;
 			    var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
@@ -380,15 +381,15 @@
 			    	view.mousemove = true;
 			    	var offsetX = ev.stageX - target.x + offset.x;
 			        var offsetY = ev.stageY - target.y + offset.y;
-			        target.x = ev.stageX+offset.x;
-			        target.y = ev.stageY+offset.y;
+			        target.x = ox+(ev.stageX+offset.x-ox)/view.scaleVal;
+			        target.y = oy+(ev.stageY+offset.y-oy)/view.scaleVal;
 			        if(relatedContainer){
-			        	relatedContainer.x = relatedContainer.x+ offsetX;
-			        	relatedContainer.y = relatedContainer.y+ offsetY;
+			        	relatedContainer.x = rPoint.x+ (ev.stageX+offset.x-ox)/view.scaleVal;
+			        	relatedContainer.y = rPoint.y+ (ev.stageY+offset.y-oy)/view.scaleVal;
 			        }
 			        if(relatedText){
-			        	relatedText.x = relatedText.x+ offsetX;
-			        	relatedText.y = relatedText.y+ offsetY;
+			        	relatedText.x = target.x-10;//relatedText.x+ offsetX/view.scaleVal;
+			        	relatedText.y = target.y+10;//relatedText.y+ offsetY/view.scaleVal;
 			        }
 			        reDrawLine.call(view,relatedLine,target.x,target.y);
 			        stage.update();

@@ -5,12 +5,14 @@
 		},
 		events:{
 			"click;.searchBtn":function(e){
+				var view = this;
+				var $e = view.$el;
 				$.ajax({
 					url:'/search',
 					type:'Get',
 					data:{
-						keywords:$(".searchInput").val(),
-						type:$(":radio:checked").val()
+						keywords:$(".searchInput",$e).val(),
+						type:$(":radio:checked",$e).val()
 					},
 					dataType:"json",
 					success:function(data){
