@@ -1,22 +1,24 @@
 <script id="tmpl-SearchResult" type="text/html">
-<div class="resultsPage" data-pg = "{{data.pg}}" data-keywords="{{data.keywords}}">
-	  <form class="form-inline" action="search">
-	  	<span class="logo">FTS Demo</span>
-	  	<input type="text" placeholder="search keywords" name="keywords" class="searchInput" value="{{data.keywords}}"/>
-	  	<input type="submit" value="Search" class="btn btn-primary"/>
-	  	<span class="alert">{{data.costTime}}</span>
-	  </form>
- 		<div class="results">
-	  	{{#each data.results}}
-	  	<div class="title">{{{title}}}</div>
-	  	<div class="details">{{{body}}}</div>
-	  	<div class="tag">{{tag}}</div>
-	  	<div class="author">owned by {{name}}</div>
-	  	{{/each}}
- 	  <div>
-    <div>
-  	  <button class="btn" data-turn="prev">Prev</button>
-  	  <button class="btn" data-turn="next">Next</button>
-    </div>
+<div class="SearchResult">
+	<div class="resultsPage" data-pg = "{{data.pg}}" data-keywords="{{data.keywords}}">
+		  <form class="form-inline" action="search">
+		  	<span class="logo">FTS Demo</span>
+		  	<input type="text" placeholder="search keywords" name="keywords" class="searchInput" value="{{data.keywords}}"/>
+		  	<input type="submit" value="Search" class="btn btn-primary"/>
+		  	<span class="alert">{{data.costTime}}</span>
+		  </form>
+	 		<div class="results">
+		  	{{#each data.results}}
+		  	<div class="title">{{{title}}}</div>
+		  	<div class="details">{{{body}}}</div>
+		  	<div class="tag">{{tag}}</div>
+		  	<div class="author">owned by {{name}}</div>
+		  	{{/each}}
+	 	  <div>
+	    <div>
+	  	  <button class="btn" data-turn="prev">Prev</button>
+	  	  <button class="btn" data-turn="next">Next</button>
+	    </div>
+	</div>
 </div>
 </script>

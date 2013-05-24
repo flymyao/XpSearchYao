@@ -7,7 +7,7 @@ Handlebars.templates['tmpl-EaselJSForceClusterSlider'] = Handlebars.template(fun
   
 
 
-  return "<div class=\"EaselJSForceClusterSlider easelJSContainer\">\n		<div class=\"clusterChart\"></div>\n		<div class=\"contact-info\"></div>\n	</div>";}
+  return "<div class=\"EaselJSForceClusterSlider easelJSContainer\">\n	<div class=\"clusterChart\"></div>\n	<div class=\"contact-info\"></div>\n</div>";}
 );
 
 // template --- tmpl-MainScreen ---
@@ -16,7 +16,7 @@ Handlebars.templates['tmpl-MainScreen'] = Handlebars.template(function (Handleba
   
 
 
-  return "<div class=\"MainScreen\">\n	    <div class=\"MainScreen-header\">\n	    </div>\n	    <div class=\"MainScreen-main\">\n	    </div>\n    </div>";}
+  return "<div class=\"MainScreen\">\n  <div class=\"MainScreen-header\">\n  </div>\n  <div class=\"MainScreen-main\">\n  </div>\n</div>";}
 );
 
 // template --- tmpl-ReportHeader ---
@@ -34,7 +34,7 @@ Handlebars.templates['tmpl-Search'] = Handlebars.template(function (Handlebars,d
   
 
 
-  return "<div class=\"mainPage\">\n	<div class=\"header\">\n		Full Text Search for Postgresql\n	</div>\n	<div class=\"searchForm\">\n		  <form action=\"search\">\n		  	<input type=\"text\" placeholder=\"search keywords\" name=\"keywords\" class=\"searchInput\"/>\n		  	<div class=\"typeContainer form-inline\">\n			  	<label><input type=\"radio\" name=\"type\" value=\"title\"/><span>title</span></label>\n			  	<label><input type=\"radio\" name=\"type\" value=\"body\"/><span>body</span></label>\n			  	<label><input type=\"radio\" name=\"type\" value=\"tag\"/><span>tag</span></label>\n			  	<label><input type=\"radio\" name=\"type\" value=\"username\"/><span>username</span></label>\n			  	<label><input type=\"radio\" name=\"type\" value=\"default\"/><span>title,body</span></label>\n			  </div>\n		  	<div class=\"btns form-inline\">\n		  		<input type=\"button\" value=\"Search\" class=\"btn btn-primary searchBtn\"/>\n		 			<ul class=\"nav nav-pills\">\n					  <li class=\"dropdown\" id=\"menu1\">\n					    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#menu1\">\n					      Import Data\n					      <b class=\"caret\"></b>\n					    </a>\n					    <ul class=\"dropdown-menu\">\n					      <li><a href=\"#\"  onClick=\"app.importData('Post');\">Post</a></li>\n					      <li><a href=\"#\"  onClick=\"app.importData('Comment');\">Comment</a></li>\n					        <li><a href=\"#\"  onClick=\"app.importData('User');\">User</a></li>\n					    </ul>\n					  </li>\n					</ul>\n		 		</div>\n		  </form>\n	</div>\n</div>";}
+  return "<div class=\"Search\">\n	<div class=\"mainPage\">\n		<div class=\"header\">\n			Full Text Search for Postgresql\n		</div>\n		<div class=\"searchForm\">\n			  <form action=\"search\">\n			  	<input type=\"text\" placeholder=\"search keywords\" name=\"keywords\" class=\"searchInput\"/>\n			  	<div class=\"typeContainer form-inline\">\n				  	<label><input type=\"radio\" name=\"type\" value=\"title\"/><span>title</span></label>\n				  	<label><input type=\"radio\" name=\"type\" value=\"body\"/><span>body</span></label>\n				  	<label><input type=\"radio\" name=\"type\" value=\"tag\"/><span>tag</span></label>\n				  	<label><input type=\"radio\" name=\"type\" value=\"username\"/><span>username</span></label>\n				  	<label><input type=\"radio\" name=\"type\" value=\"default\"/><span>title,body</span></label>\n				  </div>\n			  	<div class=\"btns form-inline\">\n			  		<input type=\"button\" value=\"Search\" class=\"btn btn-primary searchBtn\"/>\n			 			<ul class=\"nav nav-pills\">\n						  <li class=\"dropdown\" id=\"menu1\">\n						    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#menu1\">\n						      Import Data\n						      <b class=\"caret\"></b>\n						    </a>\n						    <ul class=\"dropdown-menu\">\n						      <li><a href=\"#\"  onClick=\"app.importData('Post');\">Post</a></li>\n						      <li><a href=\"#\"  onClick=\"app.importData('Comment');\">Comment</a></li>\n						        <li><a href=\"#\"  onClick=\"app.importData('User');\">User</a></li>\n						    </ul>\n						  </li>\n						</ul>\n			 		</div>\n			  </form>\n		</div>\n	</div>\n</div>";}
 );
 
 // template --- tmpl-SearchResult ---
@@ -45,28 +45,28 @@ Handlebars.templates['tmpl-SearchResult'] = Handlebars.template(function (Handle
 function program1(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
-  buffer += "\n	  	<div class=\"title\">";
+  buffer += "\n		  	<div class=\"title\">";
   foundHelper = helpers.title;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</div>\n	  	<div class=\"details\">";
+  buffer += "</div>\n		  	<div class=\"details\">";
   foundHelper = helpers.body;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.body; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</div>\n	  	<div class=\"tag\">";
+  buffer += "</div>\n		  	<div class=\"tag\">";
   foundHelper = helpers.tag;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.tag; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</div>\n	  	<div class=\"author\">owned by ";
+  buffer += escapeExpression(stack1) + "</div>\n		  	<div class=\"author\">owned by ";
   foundHelper = helpers.name;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
-  buffer += escapeExpression(stack1) + "</div>\n	  	";
+  buffer += escapeExpression(stack1) + "</div>\n		  	";
   return buffer;}
 
-  buffer += "<div class=\"resultsPage\" data-pg = \"";
+  buffer += "<div class=\"SearchResult\">\n	<div class=\"resultsPage\" data-pg = \"";
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.pg;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
@@ -74,20 +74,20 @@ function program1(depth0,data) {
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.keywords;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\">\n	  <form class=\"form-inline\" action=\"search\">\n	  	<span class=\"logo\">FTS Demo</span>\n	  	<input type=\"text\" placeholder=\"search keywords\" name=\"keywords\" class=\"searchInput\" value=\"";
+  buffer += escapeExpression(stack1) + "\">\n		  <form class=\"form-inline\" action=\"search\">\n		  	<span class=\"logo\">FTS Demo</span>\n		  	<input type=\"text\" placeholder=\"search keywords\" name=\"keywords\" class=\"searchInput\" value=\"";
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.keywords;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\"/>\n	  	<input type=\"submit\" value=\"Search\" class=\"btn btn-primary\"/>\n	  	<span class=\"alert\">";
+  buffer += escapeExpression(stack1) + "\"/>\n		  	<input type=\"submit\" value=\"Search\" class=\"btn btn-primary\"/>\n		  	<span class=\"alert\">";
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.costTime;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>\n	  </form>\n 		<div class=\"results\">\n	  	";
+  buffer += escapeExpression(stack1) + "</span>\n		  </form>\n	 		<div class=\"results\">\n		  	";
   stack1 = depth0.data;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.results;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n 	  <div>\n    <div>\n  	  <button class=\"btn\" data-turn=\"prev\">Prev</button>\n  	  <button class=\"btn\" data-turn=\"next\">Next</button>\n    </div>\n</div>";
+  buffer += "\n	 	  <div>\n	    <div>\n	  	  <button class=\"btn\" data-turn=\"prev\">Prev</button>\n	  	  <button class=\"btn\" data-turn=\"next\">Next</button>\n	    </div>\n	</div>\n</div>";
   return buffer;}
 );
 
@@ -97,5 +97,5 @@ Handlebars.templates['tmpl-TagCluster'] = Handlebars.template(function (Handleba
   
 
 
-  return "<div>\n	<canvas id=\"TagCluster\" width=\"1280\" height=\"520\"></canvas>\n	<div class=\"tag-info\">\n		<span></span>\n	</div>\n</div>";}
+  return "<div class=\"TagCluster\">\n	<div class=\"TagClusterContainer\">\n		<canvas id=\"TagCluster\"></canvas>\n	</div>\n	<div class=\"tag-info\">\n		<span></span>\n	</div>\n</div>";}
 );
