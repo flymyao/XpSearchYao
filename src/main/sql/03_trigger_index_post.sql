@@ -24,16 +24,16 @@ CREATE TRIGGER tsvectorupdatebtsv BEFORE INSERT OR UPDATE
   tsvector_update_trigger(btsv, 'pg_catalog.english', body);
   
   
-  CREATE FUNCTION post_trigger() RETURNS trigger AS $$
+  CREATE OR REPLACE FUNCTION post_trigger() RETURNS trigger AS $$
 begin
   new.tsv :=
      setweight(to_tsvector('english', coalesce(new.title,'')), 'A') ||
-     setweight(to_tsvector('english', coalesce(new.body,'')), 'C')
+     setweight(to_tsvector('english', coalesce(new.body,'')), 'C');
   return new;
 end
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdatebtsv BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdatetsv BEFORE INSERT OR UPDATE
   ON  xpsearchyao_schema.post  FOR EACH ROW EXECUTE PROCEDURE
 	post_trigger();
   
