@@ -7,7 +7,7 @@ Handlebars.templates['tmpl-EaselJSForceClusterSlider'] = Handlebars.template(fun
   
 
 
-  return "<div class=\"EaselJSForceClusterSlider easelJSContainer\">\n	<div class=\"ClusterChart\">\n		<canvas class=\"ClusterChart-canvas\" ></canvas>\n	</div>\n	<div class=\"contact-info\"></div>\n</div>";}
+  return "<div class=\"EaselJSForceClusterSlider\">\n	<div class=\"ClusterChart\">\n		<canvas class=\"ClusterChart-canvas\" ></canvas>\n	</div>\n	<div class=\"contact-info\"></div>\n</div>";}
 );
 
 // template --- tmpl-MainScreen ---
