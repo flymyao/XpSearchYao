@@ -62,7 +62,7 @@
 				createjs.Ticker.useRAF = app.useRAF;
 				createjs.Ticker.setFPS(60);
 				
-				var canvas = $("#TagCluster",$e)[0];
+				var canvas = $(".TagClusterChart-canvas",$e)[0];
 				canvas.width = $e.parent().width();
         		canvas.height = $e.parent().height();
         		

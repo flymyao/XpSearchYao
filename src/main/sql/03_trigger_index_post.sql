@@ -24,7 +24,7 @@ CREATE TRIGGER tsvectorupdatebtsv BEFORE INSERT OR UPDATE
   tsvector_update_trigger(btsv, 'pg_catalog.english', body);
   
   
-  CREATE OR REPLACE FUNCTION post_trigger() RETURNS trigger AS $$
+  CREATE  OR REPLACE FUNCTION xpsearchyao_schema.post_trigger() RETURNS trigger AS $$
 begin
   new.tsv :=
      setweight(to_tsvector('english', coalesce(new.title,'')), 'A') ||
@@ -35,7 +35,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectorupdatetsv BEFORE INSERT OR UPDATE
   ON  xpsearchyao_schema.post  FOR EACH ROW EXECUTE PROCEDURE
-	post_trigger();
+	xpsearchyao_schema.post_trigger();
   
 CREATE INDEX gin_index ON xpsearchyao_schema.post 
   USING gin(ttsv,btsv);
@@ -44,7 +44,7 @@ CREATE INDEX gin_index ON xpsearchyao_schema.post
 /***************end trigger for post**********************/     
      
 /***************begin trigger for tag**********************/
-CREATE OR REPLACE FUNCTION addtagpost() RETURNS trigger AS $addtagpost$
+CREATE OR REPLACE FUNCTION xpsearchyao_schema.addtagpost() RETURNS trigger AS $addtagpost$
     BEGIN
        insert into xpsearchyao_schema.tagpost(tagid, postid)
     select new.id, id from xpsearchyao_schema.post where tsv @@ to_tsquery(new.name);
@@ -54,5 +54,5 @@ $addtagpost$ LANGUAGE plpgsql;
 
 CREATE TRIGGER addtagpost after INSERT OR UPDATE
   ON  xpsearchyao_schema.tag  FOR EACH ROW EXECUTE PROCEDURE
-  addtagpost();
+  xpsearchyao_schema.addtagpost();
 /***************end trigger for tag**********************/
