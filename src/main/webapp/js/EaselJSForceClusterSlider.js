@@ -285,8 +285,8 @@
 			   		
 			    if($contactInfo.find("span").size() == 0){
 			    	$contactInfo.html('<span class="label label-info">'+view.rootName+": "+children+' friends</span>')
-				    $contactInfo.css("top",d.target.y-10);
-				    $contactInfo.css("left",d.target.x+20);
+				    $contactInfo.css("top",d.stageY);
+			    	$contactInfo.css("left",d.stageX);
 				    $contactInfo.css("opacity",1);
 			    }else{
 			    	$contactInfo.empty();
@@ -300,8 +300,8 @@
 			    
 			    var $contactInfo = view.$el.find(".contact-info");
 			    $contactInfo.html('<span class="label label-info">Name: '+target.name+", Weight: "+target.weight+'</span>')
-				$contactInfo.css("top",target.y-10);
-				$contactInfo.css("left",target.x+20);
+			    $contactInfo.css("top",evt.stageY);
+				$contactInfo.css("left",evt.stageX);
 				$contactInfo.css("opacity",1);
 			}
 			
