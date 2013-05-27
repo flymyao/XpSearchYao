@@ -238,7 +238,7 @@
 			    statLayout.addChild(newCircle);
       				
       			statLayout.removeChild(d.target);
-      			var node = app.shapes.drawNodeCircle(rx,ry,_colors[0],5);
+      			var node = app.shapes.drawNodeCircle(rx,ry,_colors[0],getSize.call(view,d.target.data.num));
       			node.name = view.cName;
 			    node.uid = d.target.data.tagid;
       			statLayout.addChild(node);
@@ -302,11 +302,11 @@
 				var view = this;
 			    var stage = view.stage;
 			    var target = evt.target;
-			    
+			    console.log(evt);
 			    var $contactInfo = view.$el.find(".tag-info");
 			    $contactInfo.html('<span class="label label-info">Name: '+target.name+", Weight: "+target.weight+'</span>')
-				$contactInfo.css("top",target.y-10);
-				$contactInfo.css("left",target.x+20);
+				$contactInfo.css("top",evt.stageY-10);
+				$contactInfo.css("left",evt.stageX+20);
 				$contactInfo.css("opacity",1);
 			}
 			
