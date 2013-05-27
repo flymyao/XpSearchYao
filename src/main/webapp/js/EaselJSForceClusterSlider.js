@@ -113,8 +113,11 @@
         			var cx = fpos[i].x;
 			        var cy = fpos[i].y;
 			        var cData = childrenData[i];
-			        var line = createLine.call(view,rx,ry,cx,cy,level);
-			        var node = createNodeCircle.call(view,cx,cy,cData.name,level,cData.id);
+			        var line = app.shapes.drawLine(rx,ry,cx,cy,_colors[view.level-level]);//createLine.call(view,rx,ry,cx,cy,level);
+			        var node = app.shapes.drawNodeCircle(cx,cy,_colors[view.level-level],5);//createNodeCircle.call(view,cx,cy,cData.name,level,cData.id);
+			        node.name = cData.name;
+			        node.uid = cData.id;
+			        
 			        containerRoot.addChild(line);
 			        containerRoot.addChild(node);
 			        node.originPotint = {cx:cx,cy:cy};
@@ -136,7 +139,7 @@
 
 			        //show the label
 			        if((view.level-level) <= 1){
-			        	var text = createText.call(view,cx,cy, cData.name);
+			        	var text = app.shapes.drawText(cx,cy,cData.name);//createText.call(view,cx,cy, cData.name);
 			        	node.relatedText = text;
 			        	text.originPotint = {x:cx - 10,y:cy + 10};
 			        	containerRoot.addChild(text);
@@ -152,7 +155,8 @@
 				});
 				
 				//draw the origin point
-				var circle = createCenterCircle.call(view,rx, ry, view.cName,level);
+				var circle = app.shapes.drawCenterCircle(rx, ry,_centerColors[view.level-level],5);//createCenterCircle.call(view, d.target.x, d.target.y, view.cName, view.level);
+				circle.name = view.cName
 				circle.children = childrenData.length;
 			    containerRoot.addChild(circle);
 					
@@ -160,7 +164,7 @@
 					 //add the click event for circle
 			    	circle.addEventListener("click", function(d){clickOriginPointEvent.call(view,d)});
 			    
-				    var text = createText.call(view,rx,ry, parentName);
+				    var text = app.shapes.drawText(rx,ry,parentName);//createText.call(view,rx,ry, parentName);
 	      			containerRoot.addChild(text); 
 	      			containerRoot.scaleX = view.scaleVal; 
 					containerRoot.scaleY = view.scaleVal; 
@@ -205,53 +209,6 @@
 				stage.update();
 			}
         	
-        	function createNodeCircle(cx,cy,cName,level,id){
-        		var view = this;
-		      	var r = 5;
-		    	var color = _colors[view.level - level];
-		      	var circle = new createjs.Shape();
-		      		circle.graphics.beginStroke("#a4998e").drawCircle(0, 0, r+0.5);
-		      		circle.graphics.beginFill(color).drawCircle(0, 0, r);
-		      		circle.x = cx;
-			        circle.y = cy;
-			        circle.name = cName;
-			        circle.uid = id;
-		      	return circle;
-		    }
-		    
-		    function createCenterCircle(cx,cy,cName,level){
-		    	var view = this;
-		      	var r = 5;
-		      	var color = _centerColors[view.level - level];
-		      	var circle = new createjs.Shape();
-		      		circle.graphics.beginStroke("#a4998e").drawCircle(0, 0, r+0.5);
-		      		circle.graphics.beginFill(color).drawCircle(0, 0, r);
-		      		circle.x = cx;
-			        circle.y = cy;
-			        circle.name = cName
-		      	return circle;
-		    }
-		    
-		    function createLine(x0, y0, x1, y1, level){
-		    	var view = this;
-		    	var color = _colors[view.level - level];
-		      	var line = new createjs.Shape();
-		      		line.graphics.beginStroke(color).moveTo(x0,y0).lineTo(x1,y1);
-		      		line.color = color;
-		      		line.x0 = x0;
-			        line.y0 = y0;
-			        line.x1 = x1;
-			        line.y1 = y1;
-		      	return line;
-		    }
-		    
-		    function createText(x0, y0, name){
-		      	var text = new createjs.Text(name, "10px Arial, #000");
-		      		text.x = x0 - 10;
-		      		text.y = y0 + 10;
-		      	return text;
-		    }
-		    
 		    function clickEvent(d){
 		    	var view = this;
 		    	if(view.mousemove) return;
@@ -270,11 +227,14 @@
 			    statLayout.removeChild(oldCenterCircle);
 			        
 			    var newCircle = new createjs.Shape();
-			    var newCircle = createCenterCircle.call(view, d.target.x, d.target.y, view.cName, view.level);
-      			statLayout.addChild(newCircle);
+			    var newCircle = app.shapes.drawCenterCircle(d.target.x, d.target.y,_centerColors[0],5);//createCenterCircle.call(view, d.target.x, d.target.y, view.cName, view.level);
+			    newCircle.name = view.cName
+			    statLayout.addChild(newCircle);
       				
       			statLayout.removeChild(d.target);
-      			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.uid);
+      			var node = app.shapes.drawNodeCircle(rx,ry,_colors[0],5);//createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.uid);
+      			node.name = view.cName;
+      			node.uid = d.target.uid;
       			statLayout.addChild(node);
       			
       			app.ContactDao.getById({id:d.target.uid,level:view.level}).done(function(userData){	
@@ -357,7 +317,7 @@
 				var target = evt.target;
 			    var ox = target.x;
 			    var oy = target.y;
-			    var relatedContainer = target.relatedContainer;
+			    var relatedContainer = target.relatedContainer||{};
 			    var rPoint = {x:relatedContainer.x,y:relatedContainer.y};
 			    var relatedText = target.relatedText;
 			    var relatedLine = target.relatedLine;
@@ -372,7 +332,6 @@
 			        target.x = ox+(ev.stageX+offset.x-ox)/view.scaleVal;
 			        target.y = oy+(ev.stageY+offset.y-oy)/view.scaleVal;
 			        if(relatedContainer){
-			        	console.log((ev.stageX+offset.x-ox)/view.scaleVal+"...."+(ev.stageY+offset.y-oy)/view.scaleVal);
 			        	relatedContainer.x = rPoint.x+ (ev.stageX+offset.x-ox)/view.scaleVal;
 			        	relatedContainer.y = rPoint.y+ (ev.stageY+offset.y-oy)/view.scaleVal;
 			        }

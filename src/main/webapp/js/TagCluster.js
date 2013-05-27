@@ -109,8 +109,11 @@
         			var cx = fpos[i].x;
 			        var cy = fpos[i].y;
 			        var cData = childrenData[i];
-			        var line = createLine.call(view,rx,ry,cx,cy,level,cData.weight);
-			        var node = createNodeCircle.call(view,cx,cy,cData.name,level,cData);
+			        var line = app.shapes.drawLineWithWeight(rx,ry,cx,cy,_colors[view.level-level],cData.weight);//createLine.call(view,rx,ry,cx,cy,level,cData.weight);
+			        
+			        var node = app.shapes.drawNodeCircle(cx,cy,_colors[view.level-level],getSize.call(view,cData.num));
+			        node.name = cData.name;
+			        node.uid = cData.tagid;
 			        containerRoot.addChild(line);
 			        containerRoot.addChild(node);
 			        node.originPotint = {cx:cx,cy:cy};
@@ -133,7 +136,7 @@
 
 			        //show the label
 			        if((view.level-level) <= 1){
-			        	var text = createText.call(view,cx,cy, cData.name);
+			        	var text = app.shapes.drawText(cx,cy,cData.name);
 			        	node.relatedText = text;
 			        	text.originPotint = {x:cx - 10,y:cy + 10};
 			        	containerRoot.addChild(text);
@@ -149,7 +152,8 @@
 				});
 				
 				//draw the origin point
-				var circle = createCenterCircle.call(view,rx, ry, view.cName,level,data.num);
+				var circle = app.shapes.drawCenterCircle(rx, ry,_centerColors[view.level-level],getSize.call(view,data.num));
+				circle.name=view.cName;
 				circle.children = childrenData.length;
 				circle.num = data.num;
 			    containerRoot.addChild(circle);
@@ -158,7 +162,7 @@
 					 //add the click event for circle
 			    	circle.addEventListener("click", function(d){clickOriginPointEvent.call(view,d)});
 			    
-				    var text = createText.call(view,rx,ry, parentName);
+				    var text = app.shapes.drawText(rx,ry,parentName); 
 	      			containerRoot.addChild(text); 
 	      			containerRoot.scaleX = view.scaleVal; 
 					containerRoot.scaleY = view.scaleVal; 
@@ -203,65 +207,12 @@
 				stage.update();
 			}
         	
-        	function createNodeCircle(cx,cy,cName,level,data){
-        		var view = this;
-        		var r = data.num/2;
-        		r=data.num/10000*50; 
-        		r=r>20?20:r;
-        		r=r<5?5:r;
-		    	var color = _colors[view.level - level];
-		      	var circle = new createjs.Shape();
-		      		circle.graphics.beginStroke("#a4998e").drawCircle(0, 0, r+0.5);
-		      		circle.graphics.beginFill(color).drawCircle(0, 0, r);
-		      		circle.x = cx;
-			        circle.y = cy;
-			        circle.name = cName;
-			        circle.uid = data.tagid;
-		      	return circle;
-		    }
-		    
-		    function createCenterCircle(cx,cy,cName,level,size){
-		    	var view = this;
+		    function getSize(size){
 		    	var r = size/2;
         		r=size/10000*50; 
         		r=r>20?20:r;
         		r=r<5?5:r;
-		      	var color = _centerColors[view.level - level];
-		      	var circle = new createjs.Shape();
-		      		circle.graphics.beginStroke("#a4998e").drawCircle(0, 0, r+0.5);
-		      		circle.graphics.beginFill(color).drawCircle(0, 0, r);
-		      		circle.x = cx;
-			        circle.y = cy;
-			        circle.name = cName
-		      	return circle;
-		    }
-		    
-		    function createLine(x0, y0, x1, y1, level,weight){
-		    	var view = this;
-		    	var lineContainer = new createjs.Container();
-		    	var color = _colors[view.level - level];
-		      	var line = new createjs.Shape();
-		      		line.graphics.beginStroke(color).moveTo(x0,y0).lineTo(x1,y1);
-		      		line.color = color;
-		      		line.x0 = x0;
-			        line.y0 = y0;
-			        line.x1 = x1;
-			        line.y1 = y1;
-			   
-			        var text = new createjs.Text(weight, "10px Arial", "#767676");
-		      		text.x = x0/2+x1/2;
-		      		text.y = y0/2+y1/2;
-			        
-		      		lineContainer.addChild(line,text);
-		      	return lineContainer;
-		    }
-		    
-		    
-		    function createText(x0, y0, name){
-		      	var text = new createjs.Text(name, "10px Arial, #000");
-		      		text.x = x0 - 10;
-		      		text.y = y0 + 10;
-		      	return text;
+        		return r;
 		    }
 		    
 		    function clickEvent(d){
@@ -281,12 +232,15 @@
 			    var oldCenterCircle = statLayout.getChildByName(view.cName);
 			    statLayout.removeChild(oldCenterCircle);
 			        
-			    var newCircle = new createjs.Shape();
-			    var newCircle = createCenterCircle.call(view, d.target.x, d.target.y, view.cName, view.level,d.target.data.num);
-      			statLayout.addChild(newCircle);
+			    var newCircle = app.shapes.drawCenterCircle( d.target.x, d.target.y,_centerColors[0],getSize.call(view,d.target.data.num));
+			    newCircle.name=view.cName;
+			    
+			    statLayout.addChild(newCircle);
       				
       			statLayout.removeChild(d.target);
-      			var node = createNodeCircle.call(view,rx,ry,view.cName,view.level,d.target.data);
+      			var node = app.shapes.drawNodeCircle(rx,ry,_colors[0],5);
+      			node.name = view.cName;
+			    node.uid = d.target.data.tagid;
       			statLayout.addChild(node);
       			
       			app.TagDao.getById({id:d.target.uid,level:view.level}).done(function(userData){	
@@ -368,7 +322,7 @@
 				var target = evt.target;
 			    var ox = target.x;
 			    var oy = target.y;
-			    var relatedContainer = target.relatedContainer;
+			    var relatedContainer = target.relatedContainer||{};
 			    var rPoint = {x:relatedContainer.x,y:relatedContainer.y};
 			    var relatedText = target.relatedText;
 			    var relatedLine = target.relatedLine;

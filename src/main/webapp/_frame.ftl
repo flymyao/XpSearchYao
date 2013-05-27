@@ -13,6 +13,7 @@
     <script type="text/javascript" src="${_r.contextPath}/js/ContactDaoHandler.js"></script>
     <script type="text/javascript" src="${_r.contextPath}/js/TagDaoHandler.js"></script>
     <script type="text/javascript" src="${_r.contextPath}/js/main.js"></script>
+     <script type="text/javascript" src="${_r.contextPath}/js/app.shapes.js"></script>
     <script type="text/javascript" src="${_r.contextPath}/js/bootstrap-dropdown.js"></script>
     <script type="text/javascript" src="${_r.contextPath}/js/handlebars.runtime-1.0.rc.1.min.js"></script>
 
